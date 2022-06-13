@@ -3,58 +3,271 @@
 
 <head>
     <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
-        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
-        integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
-        crossorigin="anonymous"></script>
+    <title>
+        Grafero
+    </title>
+    <link rel="shortcut icon" href="static/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="module">
+        // Load the Observable runtime and inspector.
+        import { Runtime, Inspector } from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+        // Your notebook, compiled as an ES module.
+        import notebook from "https://api.observablehq.com/@gustavo/mdcc-graficos-interativos.js?v=3";
+
+        import graph from "https://api.observablehq.com/@gustavo/mdcc-tree.js?v=3";
+        new Runtime().module(graph, name => {
+            if (name === "buildvis") {
+                return new Inspector(document.querySelector("#graph"));
+            }
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body class="bg-light">
-    <div class="container">
-        <div class="row mt-4">
-            <div  class="d-flex justify-content-center">
-                <div class="col d-flex justify-content-center ">
-                    <p></p>
-                    <div class="badge bg-primary text-wrap" style="width: 50%;">
-                        <!--Div para mensagem de boas vindas e apresentacao do projeto-->
-                        <h2 class="text-xl-center">Bem Vindo!</h2>
+    <div class="container-fluid">
+        <p class="h2 text-center"><strong>Gerador de Gráficos</strong></p>
+        <div class="d-flex justify-content-center mb-3 mt-2">
+            <a href="/">
+                <button type="button" class="btn btn-warning">Limpar Tela</button>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Credenciais do Banco
+                    </button>
+                    <div class="dropdown-menu" style="background-color: #c0e0e7;">
+                        <form action="/graph" method="post" class="px-4 py-3">
+                            <fieldset>
+                                <legend>Acesso ao banco 1</legend>
+                                <div class="">
+                                    <label for="usuario" class="form-label">User</label>
+                                    <input name="user1" type="text" id="disabledTextInput" class="form-control"
+                                        placeholder="Dados de User do banco">
+                                </div>
+                                <div class="">
+                                    <label for="disabledTextInput" class="form-label">Password</label>
+                                    <input name="password1" type="password" id="disabledTextInput" class="form-control"
+                                        placeholder="Password">
+                                </div>
+                                <div class="">
+                                    <label for="disabledTextInput" class="form-label">Identificador do banco</label>
+                                    <input name="id1" type="text" id="disabledTextInput" class="form-control"
+                                        placeholder="SID, etc">
+                                </div>
+                                <div class="">
+                                    <label for="disabledTextInput" class="form-label">Port</label>
+                                    <input name="port1" type="text" id="disabledTextInput" class="form-control"
+                                        placeholder="Porta de conexão">
+                                </div>
+                                <div class="">
+                                    <label for="disabledSelect" class="form-label">Select Database Type</label>
+                                    <select name="bd1" id="disabledSelect" class="form-select">
+                                        <option>Oracle</option>
+                                        <option>PostgreSQL</option>
+                                        <option>MySQL</option>
+                                        <option>MariaDB</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </fieldset>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">New around here? Sign up</a>
+                        <a class="dropdown-item" href="#">Forgot password?</a>
                     </div>
                 </div>
-            </div>
-        
-            <div class="mt-4">
-                <div class="col d-flex justify-content-center ">
-                    <div><p></p></div> <!--Pulando linha-->
-                    <form action="/generator" method="get">
-                        <fieldset>
-                          <legend>Gerar Gráficos / Comparar Bancos</legend>
-                          <div class="mb-3">
-                            <label for="disabledSelect" class="form-label">Menu de seleção de ferramenta</label>
-                            <select name="tool" id="disabledSelect" class="form-select">
-                                <option>1 - Gerador de Gráficos</option>
-                                <option>2 - Comparador de Dados</option>
-                            </select>
-                          </div>
-                          <button type="submit" class="btn btn-primary">Escolher</button>
-                        </fieldset>
-                    </form>
-                    <div><p></p></div> <!--Pulando linha-->
+
+                <form action="/" method="post" class="mt-5">
+                    <label for="consultasql">Consulta SQL</label>
+                    <!--<input name="consultasql" type="text" class="form-control" id="consultasql"
+                        aria-describedby="consultasql" placeholder="Insert your query">-->
+                    <textarea name="sql" class="form-control" aria-label="With textarea" placeholder="Insert your select" rows="10"></textarea>
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                        </svg> 
+                        Executar
+                    </button>
+                    <small id="consultasql" class="form-text text-muted">Consulta ao banco 1</small>
+                </form>
+                <div class="col mt-5">
+                    <p class="lead text-center">Informações do Banco de Dados 1</p>
+                    <ul class="list-group mt-2">
+                        <li class="list-group-item">Usuario: {{user}}</li>
+                        <li class="list-group-item">Password: {{password}}</li>
+                        <li class="list-group-item">SID: {{id}}</li>
+                        <li class="list-group-item">Posta: {{port}}</li>
+                        <li class="list-group-item">Banco: {{bd}}</li>
+                    </ul>
                 </div>
             </div>
-            <div class="mt-4">
-                <div class="col d-flex justify-content-center " >
-                    <img src="/static/gif-grafico.gif" style="width: 80%" class="rounded" alt="">
+            <div class="col-6">
+                <iframe width="100%" height="903" frameborder="0"
+                    src="https://observablehq.com/embed/@gustavo/tree-compare-test?cells=view_build%2Cshow_hist"></iframe>
+            </div>
+            <!--<div class="col">
+                    <p class="h1 text-center"><strong>A</strong></p>
+                </div>
+                <div class="col">
+                    <textarea class="form-control" name="teste" id="teste" cols="30" rows="10"></textarea>
+                </div>
+                <div class="col">
+                    <p class="h1 text-center"><strong>A</strong></p>
+                </div>-->
+            <div class="col">
+                <div class="dropdown">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Credenciais do Banco
+                    </button>
+                    <div class="dropdown-menu" style="background-color: #c0e0e7;">
+                        <form action="/graph" method="post" class="px-4 py-3">
+                            <fieldset>
+                                <legend>Acesso ao banco 2</legend>
+                                <div class="">
+                                    <label for="usuario" class="form-label">User</label>
+                                    <input name="user2" type="text" id="disabledTextInput" class="form-control"
+                                        placeholder="Dados de User do banco">
+                                </div>
+                                <div class="">
+                                    <label for="disabledTextInput" class="form-label">Password</label>
+                                    <input name="password2" type="password" id="disabledTextInput" class="form-control"
+                                        placeholder="Password">
+                                </div>
+                                <div class="">
+                                    <label for="disabledTextInput" class="form-label">Identificador do banco</label>
+                                    <input name="id2" type="text" id="disabledTextInput" class="form-control"
+                                        placeholder="SID, etc">
+                                </div>
+                                <div class="">
+                                    <label for="disabledTextInput" class="form-label">Port</label>
+                                    <input name="port2" type="text" id="disabledTextInput" class="form-control"
+                                        placeholder="Porta de conexão">
+                                </div>
+                                <div class="">
+                                    <label for="disabledSelect" class="form-label">Select Database Type</label>
+                                    <select name="bd2" id="disabledSelect" class="form-select">
+                                        <option>Oracle</option>
+                                        <option>PostgreSQL</option>
+                                        <option>MySQL</option>
+                                        <option>MariaDB</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </fieldset>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">New around here? Sign up</a>
+                        <a class="dropdown-item" href="#">Forgot password?</a>
+                    </div>
+                </div>
+                <form action="/" method="post" class="mt-5">
+                    <label for="consultasql">Consulta SQL</label>
+                    <!--<input name="consultasql" type="text" class="form-control" id="consultasql"
+                        aria-describedby="consultasql" placeholder="Insert your query">-->
+                    <textarea name="sql" class="form-control" aria-label="With textarea" placeholder="Insert your select" rows="10"></textarea>
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                        </svg>
+                        Executar
+                    </button>
+                    <small id="consultasql" class="form-text text-muted">Consulta ao banco 2</small>
+                </form>
+                <div class="col mt-5">
+                    <p class="lead text-center">Informações do Banco de Dados 2</p>
+                    <ul class="list-group mt-2">
+                        <li class="list-group-item">Usuario: {{user}}</li>
+                        <li class="list-group-item">Password: {{password}}</li>
+                        <li class="list-group-item">SID: {{id}}</li>
+                        <li class="list-group-item">Posta: {{port}}</li>
+                        <li class="list-group-item">Banco: {{bd}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <!--<div class="col">
+                    <form action="/" method="post">
+                        <label for="consultasql">Consulta SQL</label>
+                        <input name="consultasql" type="text" class="form-control" id="consultasql" aria-describedby="consultasql" placeholder="Insert your query">
+                        <button type="submit" class="btn btn-primary mt-1">Registrar</button>
+                        <small id="consultasql" class="form-text text-muted">Ou utilize uma consulta pré-pronta abaixo.</small>
+                    </form>
+                    <form>
+                        <p>Colocar consutas default</p>
+                    </form>
+                </div>-->
+            <div class="col">
+                <p class="text-center">Graficos gerados</p>
+            </div>
+            <!--<div class="col">
+                    <form action="/" method="post">
+                        <label for="consultasql">Consulta SQL</label>
+                        <input name="consultasql" type="text" class="form-control" id="consultasql" aria-describedby="consultasql" placeholder="Insert your query">
+                        <button type="submit" class="btn btn-primary mt-1">Registrar</button>
+                        <small id="consultasql" class="form-text text-muted">Ou utilize uma consulta pré-pronta abaixo.</small>
+                    </form>
+                    <form>
+                        <p>Colocar consutas default</p>
+                    </form>
+                </div>-->
+        </div>
+    </div>
+    <div class="d-flex row justify-content-around">
+        <div class="d-flex justify-content-center mt-3">
+
+        </div>
+
+        <div class="col-4">
+
+        </div>
+        <div class="col-4">
+
+        </div>
+    </div>
+
+    <!--<hr class="border-primary border-3 opacity-75">-->
+
+    <div class="text-success">
+        <hr>
+    </div>
+    <div class="d-flex row justify-content-around">
+        <div class="col-6">
+            <p class="text-center"><strong>Exemplo de Grafo - unusable</strong></p>
+            <div id="a" class="split split-horizontal">
+                <div class="split content" id="container_1" style="overflow:hidden">
+                    <! overflow removes scroll ––>
+                        <div id="graph"></div>
                 </div>
             </div>
         </div>
     </div>
-    
+
+    <div class="d-flex row justify-content-around">
+        <div class="col-6">
+            <p class="text-center"><strong>Exemplo de Grafo</strong></p>
+            <div id="a" class="split split-horizontal">
+                <div>
+                    {{consulta}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

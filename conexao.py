@@ -1,5 +1,6 @@
 from multiprocessing import connection
 import cx_Oracle
+#cx_Oracle.init_oracle_client(lib_dir=r"C:\oracle\instantclient_21_3")
 
 connection = None
 
