@@ -4,7 +4,7 @@
 
 <p>Ferramenta de geração de gráficos e manipulação de dados extraidos a partir de um banco de dados setado pelo usuário.</p>
 
-<h4 align="center"><img src="https://freesvg.org/img/1553948751.png" style="width: 100px">Projeto em construção<img src="https://freesvg.org/img/1553948751.png" style="width: 100px"></h4>
+<h4 align="center"> :construction: Projeto em construção :construction:</h4>
 
 <img src="https://cdn-icons-png.flaticon.com/512/4539/4539472.png" style="width: 100px">
 <h1>Execução<h1>
