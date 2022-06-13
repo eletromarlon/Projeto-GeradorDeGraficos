@@ -4,9 +4,16 @@
 
 <p>Ferramenta de geração de gráficos e manipulação de dados extraidos a partir de um banco de dados setado pelo usuário.</p>
 
-<h4 align="center"> :construction:  Projeto em construção  :construction:</h4>
+<h4 align="center"><img src="https://freesvg.org/img/1553948751.png" style="width: 100px">Projeto em construção<img src="https://freesvg.org/img/1553948751.png" style="width: 100px"></h4>
 
+<img src="https://cdn-icons-png.flaticon.com/512/4539/4539472.png" style="width: 100px">
 <h1>Execução<h1>
+<h3>Necessário satisfazer todas as dependências que constam no arquivo requirements.txt</h3>
+
+<h2>Instruções de instalação e execução</h2>
+
+<!--
+
 <h2>Linux (Debian based)</h2>
 <p>Em linux vc precisar ter instalado a ferramenta virtualenv. Para obter a mesma:</p>
 <br>
@@ -39,3 +46,4 @@
 <p>Após os passos acima abra o seu editor dentro da pasta. Exemplo (com vs code):</p>
 
 <div align="center"><span style="font-family: courier new , sans-serif; font-size: large;"> code .</span></div><br>
+-->
