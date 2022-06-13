@@ -7,17 +7,35 @@
 <h4 align="center"> :construction:  Projeto em construção  :construction:</h4>
 
 <h1>Execução<h1>
-<h3>Linux (Debian based)</h3>
+<h2>Linux (Debian based)</h2>
 <p>Em linux vc precisar ter instalado a ferramenta virtualenv. Para obter a mesma:</p>
-
-<span style="font-family: verdana , sans-serif; font-size: large;"> sudo apt-get install virtualenv </span>
-
+<br>
+<div align="center"><span style="font-family: courier new , sans-serif; font-size: large;"> sudo apt-get install virtualenv </span></div>
+<br>
 <p>Após a instalação entre na página do projeto e inicie o ambiente virtual para a plena execução do projeto. Para tal, segue:</p>
 
-<span style="font-family: verdana , sans-serif; font-size: large;"> cd /'pasta-do-projeto'</span>
+<div align="center"><span style="font-family: courier new , sans-serif; font-size: large;"> cd /'pasta-do-projeto'</span></div>
 
-<span style="font-family: verdana , sans-serif; font-size: large;"> source venv/bin/activate</span>
+<div align="center"><span style="font-family: courier new , sans-serif; font-size: large;"> source venv/bin/activate</span></div>
+
 
 <p>Após os passos acima abra o seu editor dentro da pasta. Exemplo (com vs code):</p>
 
-<span style="font-family: verdana , sans-serif; font-size: large;"> code .</span>
+<div align="center"><span style="font-family: courier new , sans-serif; font-size: large;"> code .</span></div>
+
+<h2>Windows</h2>
+<p>Para a execução no windows também é necessária uma ferramenta de ambiente virtual. Esses passos presupõe que já possua um ambiente python3 funcionando em sua máquina. Para obter a mesma, abra o seu prompt ou o power shell e execute:</p>
+
+<div align="center"><span style="font-family: courier new , sans-serif; font-size: large;"> pip install virtualenv </span></div>
+
+<p>Após a instalação entre na página do projeto e inicie o ambiente virtual para a plena execução do projeto. Para tal, segue:</p>
+
+<div align="center">
+    <span style="font-family: courier new , sans-serif; font-size: large;"> cd \'pasta-do-projeto'\</span>
+</div>
+<br>
+<div align="center"><span style="font-family: courier new , sans-serif; font-size: large;"> .\venv\Scripts\activate.ps1 </span></div><br>
+
+<p>Após os passos acima abra o seu editor dentro da pasta. Exemplo (com vs code):</p>
+
+<div align="center"><span style="font-family: courier new , sans-serif; font-size: large;"> code .</span></div><br>
