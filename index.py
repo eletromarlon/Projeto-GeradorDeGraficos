@@ -15,24 +15,41 @@ def teste():
 @app.route('/graph', methods=['GET', 'POST']) # nome da rota
 def postTest():
     bdOut = []
+    bdData = {}
     if request.method == 'POST':
-        user = request.form.get('user')
-        password = request.form.get('password')
-        id = request.form.get('id')
-        port = request.form.get('port')
-        bd = request.form.get('bd')
-        if bd == 'Oracle':
-            bdOut = conexao.oracleConnection(user, password, id)
-        
+        bdData = {
+            "user": request.form.get('user1'),
+            "password": request.form.get('password1'),
+            "id": request.form.get('id1'),
+            "port": request.form.get('port1'),
+            "bdType": request.form.get('bd1')
+        }
+    
+    print(bdData["user"])
+
+    try:
+        if bdData["bdType"] == 'Oracle':
+            bdOut = conexao.oracleConnection(bdData["user"], bdData["password"], bdData["id"])
+    except:
         return render_template(
-            'graphGenerator.html',
-            user = user,
-            password = password,
-            id = id,
-            port = port,
-            bd = bd,
+            'index.html',
+            user = "CONNECTION ERROR",
+            password = "CONNECTION ERROR",
+            id = "CONNECTION ERROR",
+            port = "CONNECTION ERROR",
+            bd = "CONNECTION ERROR",
             consulta = bdOut   
         )
+        
+    return render_template(
+        'index.html',
+        user = bdData["user"],
+        password = bdData["password"],
+        id = bdData["id"],
+        port = bdData["port"],
+        bd = bdData["bdType"],
+        consulta = bdOut   
+    )
 
 @app.route('/generator', methods=['GET', 'POST']) # nome da rota
 def getGenerator():

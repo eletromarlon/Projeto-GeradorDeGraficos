@@ -12,6 +12,8 @@
 
 <h2>Instruções de instalação e execução</h2>
 
+
+pip install -r requirements.txt
 <!--
 
 <h2>Linux (Debian based)</h2>
