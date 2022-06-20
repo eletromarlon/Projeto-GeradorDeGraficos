@@ -28,6 +28,7 @@
 <body class="bg-light">
     <div class="container-fluid">
         <p class="h2 text-center"><strong>Gerador de Gráficos</strong></p>
+        <p class="h6 text-center text-danger">{{erro}}</p>
         <div class="d-flex justify-content-center mb-3 mt-2">
             <a href="/">
                 <button type="button" class="btn btn-warning">Limpar Tela</button>
@@ -41,52 +42,51 @@
                         Credenciais do Banco
                     </button>
                     <div class="dropdown-menu" style="background-color: #c0e0e7;">
-                        <form action="/graph" method="post" class="px-4 py-3">
+                        <form action="/conexao1" method="post" class="px-4 py-3">
                             <fieldset>
                                 <legend>Acesso ao banco 1</legend>
                                 <div class="">
-                                    <label for="usuario" class="form-label">User</label>
+                                    <label for="usuario" class="form-label">Username</label>
                                     <input name="user1" type="text" id="disabledTextInput" class="form-control"
-                                        placeholder="Dados de User do banco">
+                                        placeholder="Usuário do banco">
                                 </div>
                                 <div class="">
                                     <label for="disabledTextInput" class="form-label">Password</label>
                                     <input name="password1" type="password" id="disabledTextInput" class="form-control"
-                                        placeholder="Password">
+                                        placeholder="Senha do banco">
                                 </div>
                                 <div class="">
-                                    <label for="disabledTextInput" class="form-label">Identificador do banco</label>
+                                    <label for="disabledTextInput" class="form-label">Id/Nome do DB</label>
                                     <input name="id1" type="text" id="disabledTextInput" class="form-control"
-                                        placeholder="SID, etc">
+                                        placeholder="SID, Nome, Schema.nome etc">
                                 </div>
                                 <div class="">
-                                    <label for="disabledTextInput" class="form-label">Port</label>
+                                    <label for="disabledTextInput" class="form-label">Host</label>
                                     <input name="port1" type="text" id="disabledTextInput" class="form-control"
-                                        placeholder="Porta de conexão">
+                                        placeholder="Host de conexao com o banco">
                                 </div>
                                 <div class="">
-                                    <label for="disabledSelect" class="form-label">Select Database Type</label>
+                                    <label for="disabledSelect" class="form-label">Selecione o tipo do DB</label>
                                     <select name="bd1" id="disabledSelect" class="form-select">
                                         <option>Oracle</option>
                                         <option>PostgreSQL</option>
                                         <option>MySQL</option>
-                                        <option>MariaDB</option>
+                                        <option>SQLite</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Registrar</button>
                             </fieldset>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">New around here? Sign up</a>
-                        <a class="dropdown-item" href="#">Forgot password?</a>
+                        <a class="dropdown-item" href="/contacts">Algum erro?</a>
                     </div>
                 </div>
 
-                <form action="/" method="post" class="mt-5">
+                <form action="/consultasql" method="post" class="mt-5">
                     <label for="consultasql">Consulta SQL</label>
                     <!--<input name="consultasql" type="text" class="form-control" id="consultasql"
                         aria-describedby="consultasql" placeholder="Insert your query">-->
-                    <textarea name="sql" class="form-control" aria-label="With textarea" placeholder="Insert your select" rows="10"></textarea>
+                    <textarea name="sql1" class="form-control" aria-label="With textarea" placeholder="Faça aqui a sua consulta" rows="10"></textarea>
                     <button type="submit" class="btn btn-primary mt-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
                             <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
@@ -98,11 +98,11 @@
                 <div class="col mt-5">
                     <p class="lead text-center">Informações do Banco de Dados 1</p>
                     <ul class="list-group mt-2">
-                        <li class="list-group-item">Usuario: {{user}}</li>
-                        <li class="list-group-item">Password: {{password}}</li>
-                        <li class="list-group-item">SID: {{id}}</li>
-                        <li class="list-group-item">Posta: {{port}}</li>
-                        <li class="list-group-item">Banco: {{bd}}</li>
+                        <li class="list-group-item">Usuario: {{user1}}</li>
+                        <li class="list-group-item"><input name="password2" type="password" id="disabledTextInput" class="form-control" value="{{password1}}"></li>
+                        <li class="list-group-item">SID: {{id1}}</li>
+                        <li class="list-group-item">Posta: {{port1}}</li>
+                        <li class="list-group-item">Banco: {{bd1}}</li>
                     </ul>
                 </div>
             </div>
@@ -128,51 +128,50 @@
                         Credenciais do Banco
                     </button>
                     <div class="dropdown-menu" style="background-color: #c0e0e7;">
-                        <form action="/graph" method="post" class="px-4 py-3">
+                        <form action="/conexao2" method="post" class="px-4 py-3">
                             <fieldset>
                                 <legend>Acesso ao banco 2</legend>
                                 <div class="">
-                                    <label for="usuario" class="form-label">User</label>
+                                    <label for="usuario" class="form-label">Username</label>
                                     <input name="user2" type="text" id="disabledTextInput" class="form-control"
-                                        placeholder="Dados de User do banco">
+                                        placeholder="Usuário do banco">
                                 </div>
                                 <div class="">
                                     <label for="disabledTextInput" class="form-label">Password</label>
                                     <input name="password2" type="password" id="disabledTextInput" class="form-control"
-                                        placeholder="Password">
+                                        placeholder="Senha do banco">
                                 </div>
                                 <div class="">
-                                    <label for="disabledTextInput" class="form-label">Identificador do banco</label>
+                                    <label for="disabledTextInput" class="form-label">Id/Nome do DB</label>
                                     <input name="id2" type="text" id="disabledTextInput" class="form-control"
                                         placeholder="SID, etc">
                                 </div>
                                 <div class="">
-                                    <label for="disabledTextInput" class="form-label">Port</label>
+                                    <label for="disabledTextInput" class="form-label">Host</label>
                                     <input name="port2" type="text" id="disabledTextInput" class="form-control"
-                                        placeholder="Porta de conexão">
+                                        placeholder="Host de conexao com o banco">
                                 </div>
                                 <div class="">
-                                    <label for="disabledSelect" class="form-label">Select Database Type</label>
+                                    <label for="disabledSelect" class="form-label">Selecione o tipo do DB</label>
                                     <select name="bd2" id="disabledSelect" class="form-select">
                                         <option>Oracle</option>
                                         <option>PostgreSQL</option>
                                         <option>MySQL</option>
-                                        <option>MariaDB</option>
+                                        <option>SQLite</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Registrar</button>
                             </fieldset>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">New around here? Sign up</a>
-                        <a class="dropdown-item" href="#">Forgot password?</a>
+                        <a class="dropdown-item" href="/contacts">Algum erro?</a>
                     </div>
                 </div>
-                <form action="/" method="post" class="mt-5">
+                <form action="/consultasql" method="post" class="mt-5">
                     <label for="consultasql">Consulta SQL</label>
                     <!--<input name="consultasql" type="text" class="form-control" id="consultasql"
                         aria-describedby="consultasql" placeholder="Insert your query">-->
-                    <textarea name="sql" class="form-control" aria-label="With textarea" placeholder="Insert your select" rows="10"></textarea>
+                    <textarea name="sql2" class="form-control" aria-label="With textarea" placeholder="Faça aqui a sua consulta" rows="10"></textarea>
                     <button type="submit" class="btn btn-primary mt-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
                             <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
@@ -184,11 +183,11 @@
                 <div class="col mt-5">
                     <p class="lead text-center">Informações do Banco de Dados 2</p>
                     <ul class="list-group mt-2">
-                        <li class="list-group-item">Usuario: {{user}}</li>
-                        <li class="list-group-item">Password: {{password}}</li>
-                        <li class="list-group-item">SID: {{id}}</li>
-                        <li class="list-group-item">Posta: {{port}}</li>
-                        <li class="list-group-item">Banco: {{bd}}</li>
+                        <li class="list-group-item">Usuario: {{user2}}</li>
+                        <li class="list-group-item"><input name="password2" type="password" id="disabledTextInput" class="form-control" value="{{password2}}"></li>
+                        <li class="list-group-item">SID: {{id2}}</li>
+                        <li class="list-group-item">Posta: {{port2}}</li>
+                        <li class="list-group-item">Banco: {{bd2}}</li>
                     </ul>
                 </div>
             </div>
@@ -206,7 +205,15 @@
                     </form>
                 </div>-->
             <div class="col">
-                <p class="text-center">Graficos gerados</p>
+                <!--<p class="text-center">Valores retornados</p>-->
+                <div class="text-center">
+                    <label for="disabledTextInput" class="form-label text-info"><strong>Retorno Consulta 1</strong></label><br>
+                    <label for="disabledTextInput" class="form-label">{{consulta1}}</label>
+                </div>
+                <div class="text-center">
+                    <label for="disabledTextInput" class="form-label text-info"><strong>Retorno Consulta 2</strong></label><br>
+                    <label for="disabledTextInput" class="form-label">{{consulta2}}</label>
+                </div>
             </div>
             <!--<div class="col">
                     <form action="/" method="post">
@@ -221,46 +228,9 @@
                 </div>-->
         </div>
     </div>
-    <div class="d-flex row justify-content-around">
-        <div class="d-flex justify-content-center mt-3">
 
-        </div>
+    <hr class="border-secondary border-3 opacity-75">
 
-        <div class="col-4">
-
-        </div>
-        <div class="col-4">
-
-        </div>
-    </div>
-
-    <!--<hr class="border-primary border-3 opacity-75">-->
-
-    <div class="text-success">
-        <hr>
-    </div>
-    <div class="d-flex row justify-content-around">
-        <div class="col-6">
-            <p class="text-center"><strong>Exemplo de Grafo - unusable</strong></p>
-            <div id="a" class="split split-horizontal">
-                <div class="split content" id="container_1" style="overflow:hidden">
-                    <! overflow removes scroll ––>
-                        <div id="graph"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="d-flex row justify-content-around">
-        <div class="col-6">
-            <p class="text-center"><strong>Exemplo de Grafo</strong></p>
-            <div id="a" class="split split-horizontal">
-                <div>
-                    {{consulta}}
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
