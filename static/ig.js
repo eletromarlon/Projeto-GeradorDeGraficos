@@ -17,6 +17,7 @@ const edges_size = 3.5;
 let element_outer;
 let line_outer;
 let is_line_outer_visible = false;
+let is_tooltip_visible = false;
 let svg_click_flag = false;
 const debug = false;
 
@@ -38,7 +39,7 @@ function setup(){
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0 0 " + width + " " +height)
     .classed("svg-content-responsive", true)
-
+    
 
     line_outer = svg.append("line")
         .attr("stroke", "#17a2b8")
@@ -64,8 +65,13 @@ function setup(){
     })
 
     svg.on("click", function(event) {
-        //console.log("SVG CLICKED")
+  
+        if(is_tooltip_visible && svg_click_flag){
+            hideTooltip()
+            svg_click_flag = false;     
+        }
         if(is_line_outer_visible && svg_click_flag){
+            
             is_line_outer_visible = false;
             svg_click_flag = false;
             line_outer.attr("x1",0);
@@ -112,7 +118,8 @@ function setup(){
         drawElement(svg, ELEMENTS_LEFT[columns2[i]]);
         dy = dy + columns_space;
     }
-
+    
+    createtooltip()
 }
 
 
@@ -154,6 +161,7 @@ function drawElement(svg, element){
         }
 
         circle.on("click", function(event) {
+            hideTooltip()
             //console.log("CIRCLE CLICKED")
             svg_click_flag = false;
             if(is_line_outer_visible){
@@ -165,6 +173,7 @@ function drawElement(svg, element){
                 line_outer.attr("y2",0);
                 //NEW EDGE!
                 if(element_outer != null){
+                    
                     if(element_outer.side != element.side){
                         let left = null;
                         let right = null;
@@ -215,7 +224,8 @@ function drawElement(svg, element){
 
                             edge.on("click", function(event) {
                                 console.log("EDGE CLICKED: ", left.text,"<!>", right.text);
-        
+                                svg_click_flag = false;
+                                showTooltip(EDGES[left.internal_id + "$" + right.internal_id])
                             })
                             
                         }else{
@@ -304,3 +314,118 @@ function bound(value, min, max) {
     return value;
 }
 setup();
+
+
+
+function createtooltip() {
+    // d3.select("#tooltip").remove();
+    var tooltip = d3.select("#chart")  
+        .append("div")
+        .attr("id", "tooltip")
+
+        .classed("hidden", true)
+        .style('visibility', "hidden")
+
+        .style("left", "1px")
+        .style("top", "0px")
+        .style("position", "absolute")
+        .style("cursor", "default")
+        //.style("border-radius","25px")
+        .style("background", "white")
+        .style("background-position", "left top")
+        .style("background-repeat", "repeat")
+        .style("padding", "3px")
+        // .style("width", width - 5 + "px")
+        // .style("height", height/4 + "px")
+        .style("border", "2px solid #17a2b8")
+        
+        tooltip.append("span")
+            .text("C1_____")
+            .style("font-size","15px")
+            .attr("id","C1")
+            .style("color","#17a2b8")
+            .style("font-weight", "bold")
+            .style("padding-right", "10px") 
+            
+        tooltip.append("span")
+            .text("C2_____")
+            .attr("id","C2")
+            .style("font-size","15px")
+            .style("color","#17a2b8")
+            .style("font-weight", "bold")
+            .style("padding-right", "10px")
+
+        tooltip.append("br")
+        tooltip.append("hr").style("border", "1px solid #17a2b8")
+        createTooltipMetric(tooltip,"Quantidade")
+        createTooltipMetric(tooltip,"Max")
+        createTooltipMetric(tooltip,"Min")
+        
+        tooltip.append("button")
+            .text("Comparar")
+            .style("display","block")
+            .style("margin","0 auto")
+}   
+
+function createTooltipMetric(tooltip, name){
+
+        tooltip.append("span")
+            .text(name)
+            .style("font-size","14px")
+            .style("color","#17a2b8")
+            .style("font-weight", "bold")
+            .style("padding-right", "10px") 
+        tooltip.append("span")
+            .text("0")
+            .attr("id",name + "_1")
+            .style("font-size","13px")
+            .style("color","black")
+            .style("padding-right", "30px") 
+
+        tooltip.append("span")
+            .text("0")
+            .attr("id",name + "_2")
+            .style("font-size","13px")
+            .style("color","black")
+            .style("padding-left", "30px") 
+        tooltip.append("span")
+            .text(name)
+            .style("font-size","14px")
+            .style("color","#17a2b8")
+            .style("font-weight", "bold")
+            .style("padding-left", "10px") 
+        tooltip.append("br")
+}
+
+function showTooltip(edge_element) {
+    const edge = edge_element.edge
+    is_tooltip_visible = true;
+    const x1 =  parseInt(edge.attr("x1"))
+    const y1 =  parseInt(edge.attr("y1"))
+    const x2 =  parseInt(edge.attr("x2"))
+    const y2 =  parseInt(edge.attr("y2"))
+    const x = (x1 + x2) / 2
+    const y = (y1 + y2) / 2
+
+    let tooltip = d3.select("#tooltip");
+    tooltip.select("#C1").text(edge_element.left.text);
+    tooltip.select("#C2").text(edge_element.right.text);
+
+    tooltip
+        //.style("border", "2px solid black")
+       // .style("left", x + (margin.left - (tooltip.node().getBoundingClientRect().width / 2)) + "px")
+        .style("left",  x + "px")
+        .style("top",   y + "px")
+        .style('visibility', "visible")
+        .classed("hidden", false)
+    //<button type="button">Click Me!</button>
+    
+
+}
+
+function hideTooltip() {
+    is_tooltip_visible = false;
+    d3.select("#tooltip")
+        .classed("hidden", true)
+        .style('visibility', "hidden")
+}
