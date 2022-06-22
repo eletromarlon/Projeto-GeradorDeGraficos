@@ -22,6 +22,20 @@
                 <button type="button" class="btn btn-warning">Limpar Tela</button>
             </a>
         </div>
+        <div class="row justify-content-md-center">
+            <div class="alert-success" style="border-radius: 5px; text-align: center; ">
+                {{contato1}}
+                <span class="badge text-bg-secondary">{{contato1_email}}</span>
+                {{contato2}}
+                <span class="badge text-bg-secondary">{{contato2_email}}</span>
+                {{contato3}}
+                <span class="badge text-bg-secondary">{{contato3_email}}</span>
+                {{contato4}}
+                <span class="badge text-bg-secondary">{{contato4_email}}</span>
+                <p></p>
+                {{aviso}}
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <div class="dropdown">
@@ -66,7 +80,7 @@
                             </fieldset>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/contacts">Algum erro?</a>
+                        <a class="dropdown-item" href="/feedback">Algum erro?</a>
                     </div>
                 </div>
 
@@ -152,7 +166,7 @@
                             </fieldset>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/contacts">Algum erro?</a>
+                        <a class="dropdown-item" href="/feedback">Algum erro?</a>
                     </div>
                 </div>
                 <form action="/consultasql" method="post" class="mt-5">

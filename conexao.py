@@ -21,14 +21,16 @@ def mysqlConnection(host, dbname, user, password, consulta):
     connection = mysql.connector.connect(host=host, database=dbname, user=user, password=password)
     cursor = connection.cursor()
     cursor.execute(consulta)
-    return cursor.fetchall()
+    column_names = [desc[0] for desc in cursor.description]
+    return (cursor.fetchall(), column_names)
     connection.close()
 
 def sqLiteConnection(consulta):
     connection = sqlite3.Connection("teste.db")
     cursor = connection.cursor()
     cursor.execute(consulta)
-    return cursor.fetchall()
+    column_names = [desc[0] for desc in cursor.description]
+    return (cursor.fetchall(), column_names)
     # for row in cursor.execute(consulta):
     #     print(row)
     connection.close()
@@ -39,6 +41,7 @@ def postgresConnection(host, dbname, user, password, consulta):
     cursor.execute(consulta)
     # for record in cursor:
     #     print(record)
-    return (cursor.fetchall())
+    column_names = [desc[0] for desc in cursor.description]
+    return (cursor.fetchall(),column_names)
     connection.commit()
     connection.close()

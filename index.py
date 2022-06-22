@@ -26,12 +26,23 @@ def home():
        render_template('index.html')
     )
 
-@app.route('/teste') 
-def teste():
+@app.route('/feedback') 
+def feedback():
 
-    teste = "<div><button>Teste</button></div>"
-
-    return (render_template('index.html', teste = teste))
+    return (
+       render_template(
+        'index.html',
+        contato1 = "Marlon Duarte",
+        contato1_email = "eletromarlon@gmail.com",
+        contato2 = 'Gustavo Moraes',
+        contato2_email = 'emaildegustavo',
+        contato3 = "",
+        contato3_email = "",
+        contato4 = "",
+        contato4_email = "",
+        aviso = "Clique em 'Limpar Tela' para apagar essa mensagem."
+        )
+    )
 
 #Rora de primeira conexao com banco, as variaveis globais visam manter as informações para outras consultas desejadas pelo usuário
 @app.route('/conexao1', methods=['GET', 'POST']) # nome da rota
@@ -67,6 +78,7 @@ def connectionBd1():
                 bdOut1 = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], "SELECT 1")
             if bdData1["bdType"] == 'SQLite':
                 bdOut1 = conexao.sqLiteConnection("SELECT 1")
+            # print("valor em bddata1", bdOut1)
         except:
             return render_template(
                 'index.html',
@@ -166,10 +178,10 @@ def consultasql():
     consulta1 = request.form.get('sql1')
     consulta2 = request.form.get('sql2')
 
-    print("bdData1", bdData1)
-    print("bdData2", bdData2)
-    print("sql1", consulta1)
-    print("sql2", consulta2)
+    # print("bdData1", bdData1)
+    # print("bdData2", bdData2)
+    # print("sql1", consulta1)
+    # print("sql2", consulta2)
 
     if request.method == 'POST':
         if (bdData1 != None and consulta1 != None):
@@ -259,54 +271,83 @@ def consultasql():
     else:
         return render_template('index.html')
 
-@app.route('/generator', methods=['GET', 'POST']) # nome da rota
-def getGenerator():
-    bdOut = []
-    saida = request.args.get('tool') 
-    print(saida)
-    print(saida.find('2'))
-    if (saida.find('1') != -1):
-        return render_template('graphGenerator.html') 
-    else:
-        if (saida.find('2') != -1):
-            return render_template('index.html')
+@app.route('/api/colunas/<valor>', methods=['GET', 'POST']) # nome da rota
+def getGenerator(valor):
+    global bdOut1
+    global bdOut2
+
+    if request.method == 'GET':
+        if (valor == '1'):
+            try:
+                colunas1 = bdOut1[1]
+                return {
+                    "colunas": colunas1
+                }
+            except:
+                print("Valores em bdOut1", bdOut1)
+                return {
+                    "colunas": ""
+                }
         else:
-            return render_template('index.html')
+            if (valor == '2'):
+                try:
+                    colunas2 = bdOut2[1]
+                    return {
+                        "colunas": colunas2
+                    }
+                except:
+                    print("Valores em bdOut2", bdOut2)
+                    return {
+                        "colunas": ""
+                    }
+    
+    return "Erro na requisição - Verifique o metodo ou valores"
 
+@app.route('/api/generate/<valor>', methods=['GET', 'POST'])
+def postGenerator(valor):
+    global bdData1
+    global bdData2
+    #global bdOut1
+    #global bdOut2
 
+    content = request.json
 
+    sql = content['SQL']
+    value = content['value']
+    consulta = 'select max(' + value + ') as max, min(' + value + ') as min, count(' + value + ') as count, avg(' + value + ') as avg from  (' + sql + ') as result'
+    print(consulta)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''    
-@app.route('/pessoas/<string:nome>/<string:cidade>')
-def pessoa(nome, cidade):
-    return 'Nome: {}, Cidade: {}'.format(nome, cidade) #format joga os valores da função nos campos com "{}" 
-
-@app.route('/pessoa/<string:nome>/<string:cidade>') #Mesma coisa da anterior mas com JSON
-def pessoas(nome, cidade):
-    return jsonify({'nome': nome, 'cidade':cidade})
-
-
-@app.route('/', methods=['POST'])
-def webhook():
-    data = request.get_json(force=True)
-    return 'Recebido: {}\n'.format(data['data']) #trabalhando com post'''
+    if request.method == 'POST':
+        if valor == '1':
+            try:
+                if bdData1["bdType"] == 'Oracle':
+                    resposta = conexao.oracleConnection(bdData1["user"], bdData1["password"], bdData1["id"], consulta) 
+                if bdData1["bdType"] == 'MySQL':
+                    resposta = conexao.mysqlConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+                if bdData1["bdType"] == 'PostgreSQL':
+                    resposta = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+                if bdData1["bdType"] == 'SQLite':
+                    resposta = conexao.sqLiteConnection(consulta)
+                print("valor em respota", resposta)
+                return jsonify(resposta[0])
+            except:
+                return "Error! Falhou na consulta em alguma etapa do banco 1"
+        else:
+            if valor == '2':
+                try:
+                    if bdData2["bdType"] == 'Oracle':
+                        resposta = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData2["id"], consulta) 
+                    if bdData2["bdType"] == 'MySQL':
+                        resposta = conexao.mysqlConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+                    if bdData2["bdType"] == 'PostgreSQL':
+                        resposta = conexao.postgresConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+                    if bdData2["bdType"] == 'SQLite':
+                        resposta = conexao.sqLiteConnection(consulta)
+                    print("valor em respota", resposta)
+                    return jsonify(resposta[0])
+                except:
+                    return "Error! Falhou na consulta em alguma etapa do banco 2"
+            else:
+                return "Error! Parece que nao tem nenhum banco conectado ou a requisição esta errada para os bancos"
 
 app.run(debug=True) #debug=True é utilizado para reiniciar o servidor sempre que alterado
