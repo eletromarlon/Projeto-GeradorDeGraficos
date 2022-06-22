@@ -26,6 +26,13 @@ def home():
        render_template('index.html')
     )
 
+@app.route('/teste') 
+def teste():
+
+    teste = "<div><button>Teste</button></div>"
+
+    return (render_template('index.html', teste = teste))
+
 #Rora de primeira conexao com banco, as variaveis globais visam manter as informações para outras consultas desejadas pelo usuário
 @app.route('/conexao1', methods=['GET', 'POST']) # nome da rota
 def connectionBd1():

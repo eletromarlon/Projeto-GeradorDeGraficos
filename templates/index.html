@@ -9,18 +9,6 @@
     <link rel="shortcut icon" href="static/favicon.ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script type="module">
-        // Load the Observable runtime and inspector.
-        import { Runtime, Inspector } from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
-        // Your notebook, compiled as an ES module.
-        import notebook from "https://api.observablehq.com/@gustavo/mdcc-graficos-interativos.js?v=3";
-
-        import graph from "https://api.observablehq.com/@gustavo/mdcc-tree.js?v=3";
-        new Runtime().module(graph, name => {
-            if (name === "buildvis") {
-                return new Inspector(document.querySelector("#graph"));
-            }
-        });
     </script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -108,7 +96,7 @@
             </div>
             <div class="col-6">
                 <!--style="border-width:2px;border-style:solid;border-color:black;width:600px; max-width:600px; display: inline-block;"-->
-                <div >
+                <div>
                     <div id ="chart"></div>
                 </div>
             </div>
@@ -230,7 +218,6 @@
     </div>
 
     <hr class="border-secondary border-3 opacity-75">
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

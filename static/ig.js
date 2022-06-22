@@ -321,6 +321,7 @@ function createtooltip() {
     // d3.select("#tooltip").remove();
     var tooltip = d3.select("#chart")  
         .append("div")
+        .classed("col3" ,true)
         .attr("id", "tooltip")
 
         .classed("hidden", true)
@@ -330,7 +331,7 @@ function createtooltip() {
         .style("top", "0px")
         .style("position", "absolute")
         .style("cursor", "default")
-        //.style("border-radius","25px")
+        .style("border-radius","5px")
         .style("background", "white")
         .style("background-position", "left top")
         .style("background-repeat", "repeat")
@@ -357,14 +358,16 @@ function createtooltip() {
 
         tooltip.append("br")
         tooltip.append("hr").style("border", "1px solid #17a2b8")
-        createTooltipMetric(tooltip,"Quantidade")
-        createTooltipMetric(tooltip,"Max")
-        createTooltipMetric(tooltip,"Min")
+        createTooltipMetric(tooltip,"Quant.:")
+        createTooltipMetric(tooltip,"Maximo")
+        createTooltipMetric(tooltip,"Minimo")
         
         tooltip.append("button")
             .text("Comparar")
+            .classed("btn btn-outline-primary btn-sm", true)
             .style("display","block")
             .style("margin","0 auto")
+            .style("border-radius","5px")
 }   
 
 function createTooltipMetric(tooltip, name){
