@@ -8,9 +8,9 @@ const circle_radius = 7;
 const columns_margin = 20;
 const columns_space = 60;
 
-const ELEMENTS_LEFT = {};
-const ELEMENTS_RIGHT = {};
-const EDGES = {};
+let ELEMENTS_LEFT = {};
+let ELEMENTS_RIGHT = {};
+let EDGES = {};
 let SQL1 = null;
 let SQL2 = null;
 
@@ -100,7 +100,7 @@ function setup(){
         const SQL = d3.select("#text_area_1").node().value 
         console.log("CLICK EXEC 1: " + SQL)
         SQL1 = SQL;
-        clearSide(1)
+        clearSide(svg, 1)
         requestColumns(svg, 1, SQL)
     })
 
@@ -108,7 +108,7 @@ function setup(){
         const SQL = d3.select("#text_area_2").node().value 
         SQL2 = SQL;
         console.log("CLICK EXEC 2: " + SQL)
-        clearSide(2)
+        clearSide(svg, 2)
         requestColumns(svg, 2, SQL)
     })
 
@@ -145,9 +145,27 @@ async function requestCompare(db, SQL, value) {
 
 
 
-function clearSide(db){
+function clearSide(svg, db){
     hideTooltip()
+    if(db == 1){
+        for (x in ELEMENTS_LEFT) {   
+            ELEMENTS_LEFT[x].circle.remove();
+            ELEMENTS_LEFT[x].text.remove();
+        }
+        ELEMENTS_LEFT = {};
+    }else{
+        for (x in ELEMENTS_RIGHT) {   
+            ELEMENTS_RIGHT[x].circle.remove();
+            ELEMENTS_RIGHT[x].text.remove();
+        }
+        ELEMENTS_RIGHT = {};
+    }
 
+    //console.log(EDGES)
+    for (x in EDGES) {   
+        EDGES[x].edge.remove();
+    }
+    EDGES = {};
 }
 
 function loadColumns(svg, db,columns){
@@ -205,6 +223,9 @@ function drawElement(svg, element){
         .attr("r", circle_radius)
         .attr("fill", "#17a2b8")
         
+        element.circle = circle
+        element.text =  text
+
         if(element.side == "left"){
             circle.attr("cx", element.x + columns_width - columns_margin + 10)
         }else{
