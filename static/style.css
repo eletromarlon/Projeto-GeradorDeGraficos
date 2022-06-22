@@ -4,20 +4,25 @@
     border-color:black;
     width:600px; 
     max-width:600px; 
-    display: 
-    inline-block;
+    display: inline-block;
 }
 
 .tooltip {
-    visibility: hidden; 
-    left: 0px; 
-    top: 0px; 
-    position: absolute; 
-    cursor: default; 
-    border-radius: 5px; 
+    visibility: hidden;
+    overflow: hidden;
     background: left top repeat white; 
-    padding: 3px; 
     border: 2px solid rgb(23, 162, 184);
+    border-radius: 5px; 
+    cursor: default; 
+    position: fixed; 
+    margin-bottom: 1px;
+
+    width: 30%; 
+    opacity: 1;
+    padding: 3px; 
+    bottom: 0;
+    left:35%;
+
 }
 
 .spam_placeholder {

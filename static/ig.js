@@ -11,6 +11,8 @@ const columns_space = 60;
 const ELEMENTS_LEFT = {};
 const ELEMENTS_RIGHT = {};
 const EDGES = {};
+let SQL1 = null;
+let SQL2 = null;
 
 const edges_size = 3.5;
 
@@ -81,49 +83,98 @@ function setup(){
         }
     })
 
+    d3.select("#button_clean").on("click", function(event) {
+        svg.selectAll('*').remove();
+        ELEMENTS_LEFT = {};
+        ELEMENTS_RIGHT = {};
+        EDGES = {};
+        element_outer = null;
+        line_outer = null;
+        is_line_outer_visible = false;
+        is_tooltip_visible = false;
+        svg_click_flag = false;
+    })
+
+   
+    d3.select("#button_exec_1").on("click", function(event) {
+        const SQL = d3.select("#text_area_1").node().value 
+        console.log("CLICK EXEC 1: " + SQL)
+        SQL1 = SQL;
+        clearSide(1)
+        requestColumns(svg, 1, SQL)
+    })
+
+    d3.select("#button_exec_2").on("click", function(event) {
+        const SQL = d3.select("#text_area_2").node().value 
+        SQL2 = SQL;
+        console.log("CLICK EXEC 2: " + SQL)
+        clearSide(2)
+        requestColumns(svg, 2, SQL)
+    })
+
     if(debug)drawDebugLines(svg);
-    
-    const columns1 = getDataDatabase1();
-    
-    let dx = columns_margin;
+}
+
+function requestColumns(svg, db, SQL) {
+    fetch('/api/colunas/'+db, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ SQL: SQL.replaceAll(";", "") })
+    }).then(res => res.json())
+    .then(res => loadColumns(svg, db, res));
+}
+
+async function requestCompare(db, SQL, value) {
+    let response = await fetch('/api/generate/'+db, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
+        async: false,
+        body: JSON.stringify({ SQL: SQL.replaceAll(";", ""), value: "\""+value+"\"" })
+   
+    }).catch(function(err){
+        console.error("requestCompare: " + err);
+    });
+    return response.json();
+}
+
+
+
+function clearSide(db){
+    hideTooltip()
+
+}
+
+function loadColumns(svg, db,columns){
+    const side = db == 1 ? "left" : "right"
+    const elements = db == 1 ? ELEMENTS_LEFT : ELEMENTS_RIGHT;
+
+    let dx = db == 1 ? (columns_margin) : (width - columns_width);
     let dy = columns_margin;
 
-    for(let i = 0; i < columns1.length; i++){
-        console.log(columns1[i]);
-        ELEMENTS_LEFT[columns1[i]] = {
+    for(let i = 0; i < columns.length; i++){
+        //console.log(columns[i]);
+        elements[columns[i]] = {
             x: dx,
             y: dy,
-            text: columns1[i],
-            side: "left",
+            text: columns[i],
+            side: side,
             internal_id: i
         }
-        drawElement(svg, ELEMENTS_LEFT[columns1[i]]);
+        drawElement(svg, elements[columns[i]]);
         dy = dy + columns_space;
     }
-
-    const columns2 = getDataDatabase2();
-    
-    dx = width - columns_width;
-    dy = columns_margin;
-
-    for(let i = 0; i < columns2.length; i++){
-        console.log(columns2[i]);
-        ELEMENTS_LEFT[columns2[i]] = {
-            x: dx,
-            y: dy,
-            text: columns2[i],
-            side: "right",
-            internal_id: i
-        }
-        drawElement(svg, ELEMENTS_LEFT[columns2[i]]);
-        dy = dy + columns_space;
-    }
-    
-    createtooltip()
 }
 
 
 function drawElement(svg, element){
+
+    //console.log(element)
     if(debug){
         const debug_rect = svg.append("rect")   
         .attr("x", element.x)
@@ -223,7 +274,7 @@ function drawElement(svg, element){
                             })
 
                             edge.on("click", function(event) {
-                                console.log("EDGE CLICKED: ", left.text,"<!>", right.text);
+                                console.log("EDGE - CLICKED: ", left.text,"<!>", right.text);
                                 svg_click_flag = false;
                                 showTooltip(EDGES[left.internal_id + "$" + right.internal_id])
                             })
@@ -255,6 +306,70 @@ function drawElement(svg, element){
         })
     
 }
+
+
+
+
+function showTooltip(edge_element) {
+    const edge = edge_element.edge
+    is_tooltip_visible = true;
+    /*
+    const x1 =  parseInt(edge.attr("x1"))
+    const y1 =  parseInt(edge.attr("y1"))
+    const x2 =  parseInt(edge.attr("x2"))
+    const y2 =  parseInt(edge.attr("y2"))
+    const x = (x1 + x2) / 2
+    const y = (y1 + y2) / 2
+    */
+    let tooltip = d3.select("#tooltip");
+    tooltip.select("#C1").text(edge_element.left.text);
+    tooltip.select("#C2").text(edge_element.right.text);
+    
+    d3.select("#tooltip_button").on("click", function(event) {
+        console.log("compare clicked")
+        //edge_element
+        if(SQL1 != null && SQL2 != null){
+            requestCompare(1,SQL1,edge_element.left.text).then(function(res){
+                
+                tooltip.select("#max_1").text(res[0][0]);
+                tooltip.select("#min_1").text(res[0][1]);
+                tooltip.select("#qtd_1").text(res[0][2]);
+                tooltip.select("#avg_1").text(res[0][3]);
+            });
+
+            requestCompare(2,SQL2,edge_element.right.text).then(function(res){
+                tooltip.select("#max_2").text(res[0][0]);
+                tooltip.select("#min_2").text(res[0][1]);
+                tooltip.select("#qtd_2").text(res[0][2]);
+                tooltip.select("#avg_2").text(res[0][3]);
+            });
+
+        }
+    
+    })
+
+    tooltip.style('visibility', "visible")
+            .classed("hidden", false)
+    /*
+    tooltip.style("left",  x + "px")
+        .style("top",   y + "px")
+    */
+}
+
+function hideTooltip() {
+    is_tooltip_visible = false;
+    const tooltip = d3.select("#tooltip")
+        .classed("hidden", true)
+        .style('visibility', "hidden")
+    
+    tooltip.select("#max_1").text(0);
+    tooltip.select("#min_1").text(0);
+    tooltip.select("#qtd_1").text(0);
+    tooltip.select("#avg_1").text(0);
+    tooltip.select("#C1").text("");
+    tooltip.select("#C2").text("");
+}
+
 
 function drawDebugLines(svg){
     const opacity = 0.5;
@@ -314,49 +429,3 @@ function bound(value, min, max) {
     return value;
 }
 setup();
-
-
-
-function createtooltip() {
-
-    d3.select("#tooltip_button").on("click", function(event) {
-        console.log("compare clicked")
-    })
-    
-}   
-
-
-function showTooltip(edge_element) {
-    const edge = edge_element.edge
-    is_tooltip_visible = true;
-    const x1 =  parseInt(edge.attr("x1"))
-    const y1 =  parseInt(edge.attr("y1"))
-    const x2 =  parseInt(edge.attr("x2"))
-    const y2 =  parseInt(edge.attr("y2"))
-    const x = (x1 + x2) / 2
-    const y = (y1 + y2) / 2
-
-    let tooltip = d3.select("#tooltip");
-    tooltip.select("#C1").text(edge_element.left.text);
-    tooltip.select("#C2").text(edge_element.right.text);
-    
-    tooltip.select("#qtd_1").text(-1);
-    tooltip.select("#max_1").text(-2);
-    tooltip.select("#min_1").text(-3);
-    
-    tooltip.select("#qtd_2").text(-1);
-    tooltip.select("#max_2").text(-2);
-    tooltip.select("#min_2").text(-3);
-
-    tooltip.style("left",  x + "px")
-        .style("top",   y + "px")
-        .style('visibility', "visible")
-        .classed("hidden", false)
-}
-
-function hideTooltip() {
-    is_tooltip_visible = false;
-    d3.select("#tooltip")
-        .classed("hidden", true)
-        .style('visibility', "hidden")
-}

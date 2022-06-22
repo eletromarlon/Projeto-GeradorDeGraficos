@@ -14,27 +14,51 @@
 </head>
 
 <body class="bg-light">
+    
+    <div class="tooltip" id="tooltip">
+        <span id="C1" class="spam_placeholder"> C1</span> 
+        <span id="C2" class="spam_placeholder"> C1</span> 
+        <hr style="border: 1px solid rgb(23, 162, 184);">
+        <br>
+
+        <span class="spam_placeholder"> Quant.:</span> 
+        <span class="spam_element" id="qtd_1" > 0 </span> 
+        <br>
+        <span class="spam_placeholder"> Max</span> 
+        <span class="spam_element" id="max_1" > 0 </span> 
+        <br>
+        <span class="spam_placeholder"> Min</span> 
+        <span class="spam_element" id="min_1" > 0 </span> 
+        <br>
+        <span class="spam_placeholder"> Média</span> 
+        <span class="spam_element" id="avg_1" > 0 </span> 
+        <br>
+
+        <span class="spam_placeholder"> Quant.:</span> 
+        <span class="spam_element" id="qtd_2" > 0 </span> 
+        <br>
+        <span class="spam_placeholder"> Max</span> 
+        <span class="spam_element" id="max_2" > 0 </span> 
+        <br>
+        <span class="spam_placeholder"> Min</span> 
+        <span class="spam_element" id="min_2" > 0 </span> 
+        <br>
+        <span class="spam_placeholder"> Média</span> 
+        <span class="spam_element" id="avg_2" > 0 </span> 
+        <br>
+
+        <button id="tooltip_button" class="btn btn-outline-primary btn-sm tooltip_button">Comparar</button>
+
+    </div>
+
+
     <div class="container-fluid">
         <p class="h2 text-center"><strong>Gerador de Gráficos</strong></p>
         <p class="h6 text-center text-danger">{{erro}}</p>
         <div class="d-flex justify-content-center mb-3 mt-2">
             <a href="/">
-                <button type="button" class="btn btn-warning">Limpar Tela</button>
+                <button id="button_clean" type="button" class="btn btn-warning">Limpar Tela</button>
             </a>
-        </div>
-        <div class="row justify-content-md-center">
-            <div class="alert-success" style="border-radius: 5px; text-align: center; ">
-                {{contato1}}
-                <span class="badge text-bg-secondary">{{contato1_email}}</span>
-                {{contato2}}
-                <span class="badge text-bg-secondary">{{contato2_email}}</span>
-                {{contato3}}
-                <span class="badge text-bg-secondary">{{contato3_email}}</span>
-                {{contato4}}
-                <span class="badge text-bg-secondary">{{contato4_email}}</span>
-                <p></p>
-                {{aviso}}
-            </div>
         </div>
         <div class="row">
             <div class="col">
@@ -80,23 +104,26 @@
                             </fieldset>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/feedback">Algum erro?</a>
+                        <a class="dropdown-item" href="/contacts">Algum erro?</a>
                     </div>
                 </div>
 
-                <form action="/consultasql" method="post" class="mt-5">
+                <div class="mt-5">
                     <label for="consultasql">Consulta SQL</label>
                     <!--<input name="consultasql" type="text" class="form-control" id="consultasql"
                         aria-describedby="consultasql" placeholder="Insert your query">-->
-                    <textarea name="sql1" class="form-control" aria-label="With textarea" placeholder="Faça aqui a sua consulta" rows="10"></textarea>
-                    <button type="submit" class="btn btn-primary mt-3">
+                    <textarea id="text_area_1" name="sql1" class="form-control" aria-label="With textarea" placeholder="Faça aqui a sua consulta" rows="10"></textarea>
+                    <pre><code class="language-html"></code></pre>
+                    
+                    
+                    <button id="button_exec_1" class="btn btn-primary mt-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
                             <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
                         </svg> 
                         Executar
                     </button>
                     <small id="consultasql" class="form-text text-muted">Consulta ao banco 1</small>
-                </form>
+                </div>
                 <div class="col mt-5">
                     <p class="lead text-center">Informações do Banco de Dados 1</p>
                     <ul class="list-group mt-2">
@@ -110,9 +137,9 @@
             </div>
             <div class="col-6">
                 <!--style="border-width:2px;border-style:solid;border-color:black;width:600px; max-width:600px; display: inline-block;"-->
-                <div>
-                    <div id ="chart"></div>
+                <div id ="chart">
                 </div>
+                    
             </div>
             <!--<div class="col">
                     <p class="h1 text-center"><strong>A</strong></p>
@@ -166,22 +193,22 @@
                             </fieldset>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/feedback">Algum erro?</a>
+                        <a class="dropdown-item" href="/contacts">Algum erro?</a>
                     </div>
                 </div>
-                <form action="/consultasql" method="post" class="mt-5">
+                <div class="mt-5">
                     <label for="consultasql">Consulta SQL</label>
                     <!--<input name="consultasql" type="text" class="form-control" id="consultasql"
                         aria-describedby="consultasql" placeholder="Insert your query">-->
-                    <textarea name="sql2" class="form-control" aria-label="With textarea" placeholder="Faça aqui a sua consulta" rows="10"></textarea>
-                    <button type="submit" class="btn btn-primary mt-3">
+                    <textarea id="text_area_2" name="sql2" class="form-control" aria-label="With textarea" placeholder="Faça aqui a sua consulta" rows="10"></textarea>
+                    <button id="button_exec_2" class="btn btn-primary mt-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
                             <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
                         </svg>
                         Executar
                     </button>
                     <small id="consultasql" class="form-text text-muted">Consulta ao banco 2</small>
-                </form>
+                </div>
                 <div class="col mt-5">
                     <p class="lead text-center">Informações do Banco de Dados 2</p>
                     <ul class="list-group mt-2">
@@ -243,6 +270,7 @@
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="{{url_for('static', filename='ig.js')}}"></script>
+
 </body>
 
 </html>

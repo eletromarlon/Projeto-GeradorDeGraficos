@@ -276,32 +276,70 @@ def getGenerator(valor):
     global bdOut1
     global bdOut2
 
-    if request.method == 'GET':
-        if (valor == '1'):
+    content = request.json
+    consulta = "(" + content['SQL'] + ") LIMIT 0"
+
+    if request.method == 'POST':
+        if valor == '1':
             try:
-                colunas1 = bdOut1[1]
-                return {
-                    "colunas": colunas1
-                }
-            except:
-                print("Valores em bdOut1", bdOut1)
-                return {
-                    "colunas": ""
-                }
+                if bdData1["bdType"] == 'Oracle':
+                    resposta = conexao.oracleConnection(bdData1["user"], bdData1["password"], bdData1["id"], consulta) 
+                if bdData1["bdType"] == 'MySQL':
+                    resposta = conexao.mysqlConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+                if bdData1["bdType"] == 'PostgreSQL':
+                    resposta = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+                if bdData1["bdType"] == 'SQLite':
+                    resposta = conexao.sqLiteConnection(consulta)
+                print("valor em respota", resposta)
+                return jsonify(resposta[1])
+            except Exception as e:
+                print(consulta)
+                print(f"something went wrong! - {e}")
+                return "Error! Falhou na consulta em alguma etapa do banco 1"
         else:
-            if (valor == '2'):
+            if valor == '2':
                 try:
-                    colunas2 = bdOut2[1]
-                    return {
-                        "colunas": colunas2
-                    }
+                    if bdData2["bdType"] == 'Oracle':
+                        resposta = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData2["id"], consulta) 
+                    if bdData2["bdType"] == 'MySQL':
+                        resposta = conexao.mysqlConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+                    if bdData2["bdType"] == 'PostgreSQL':
+                        resposta = conexao.postgresConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+                    if bdData2["bdType"] == 'SQLite':
+                        resposta = conexao.sqLiteConnection(consulta)
+                    print("valor em respota", resposta)
+                    return jsonify(resposta[1])
                 except:
-                    print("Valores em bdOut2", bdOut2)
-                    return {
-                        "colunas": ""
-                    }
+                    return "Error! Falhou na consulta em alguma etapa do banco 2"
+            else:
+                return "Error! Parece que nao tem nenhum banco conectado ou a requisição esta errada para os bancos"
+
+    # if request.method == 'GET':
+    #     if (valor == '1'):
+    #         try:
+    #             colunas1 = bdOut1[1]
+    #             return {
+    #                 "colunas": colunas1
+    #             }
+    #         except:
+    #             print("Valores em bdOut1", bdOut1)
+    #             return {
+    #                 "colunas": ""
+    #             }
+    #     else:
+    #         if (valor == '2'):
+    #             try:
+    #                 colunas2 = bdOut2[1]
+    #                 return {
+    #                     "colunas": colunas2
+    #                 }
+    #             except:
+    #                 print("Valores em bdOut2", bdOut2)
+    #                 return {
+    #                     "colunas": ""
+    #                 }
     
-    return "Erro na requisição - Verifique o metodo ou valores"
+    # return "Erro na requisição - Verifique o metodo ou valores"
 
 @app.route('/api/generate/<valor>', methods=['GET', 'POST'])
 def postGenerator(valor):
