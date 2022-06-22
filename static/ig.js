@@ -318,87 +318,13 @@ setup();
 
 
 function createtooltip() {
-    // d3.select("#tooltip").remove();
-    var tooltip = d3.select("#chart")  
-        .append("div")
-        .classed("col3" ,true)
-        .attr("id", "tooltip")
 
-        .classed("hidden", true)
-        .style('visibility', "hidden")
-
-        .style("left", "1px")
-        .style("top", "0px")
-        .style("position", "absolute")
-        .style("cursor", "default")
-        .style("border-radius","5px")
-        .style("background", "white")
-        .style("background-position", "left top")
-        .style("background-repeat", "repeat")
-        .style("padding", "3px")
-        // .style("width", width - 5 + "px")
-        // .style("height", height/4 + "px")
-        .style("border", "2px solid #17a2b8")
-        
-        tooltip.append("span")
-            .text("C1_____")
-            .style("font-size","15px")
-            .attr("id","C1")
-            .style("color","#17a2b8")
-            .style("font-weight", "bold")
-            .style("padding-right", "10px") 
-            
-        tooltip.append("span")
-            .text("C2_____")
-            .attr("id","C2")
-            .style("font-size","15px")
-            .style("color","#17a2b8")
-            .style("font-weight", "bold")
-            .style("padding-right", "10px")
-
-        tooltip.append("br")
-        tooltip.append("hr").style("border", "1px solid #17a2b8")
-        createTooltipMetric(tooltip,"Quant.:")
-        createTooltipMetric(tooltip,"Maximo")
-        createTooltipMetric(tooltip,"Minimo")
-        
-        tooltip.append("button")
-            .text("Comparar")
-            .classed("btn btn-outline-primary btn-sm", true)
-            .style("display","block")
-            .style("margin","0 auto")
-            .style("border-radius","5px")
+    d3.select("#tooltip_button").on("click", function(event) {
+        console.log("compare clicked")
+    })
+    
 }   
 
-function createTooltipMetric(tooltip, name){
-
-        tooltip.append("span")
-            .text(name)
-            .style("font-size","14px")
-            .style("color","#17a2b8")
-            .style("font-weight", "bold")
-            .style("padding-right", "10px") 
-        tooltip.append("span")
-            .text("0")
-            .attr("id",name + "_1")
-            .style("font-size","13px")
-            .style("color","black")
-            .style("padding-right", "30px") 
-
-        tooltip.append("span")
-            .text("0")
-            .attr("id",name + "_2")
-            .style("font-size","13px")
-            .style("color","black")
-            .style("padding-left", "30px") 
-        tooltip.append("span")
-            .text(name)
-            .style("font-size","14px")
-            .style("color","#17a2b8")
-            .style("font-weight", "bold")
-            .style("padding-left", "10px") 
-        tooltip.append("br")
-}
 
 function showTooltip(edge_element) {
     const edge = edge_element.edge
@@ -413,17 +339,19 @@ function showTooltip(edge_element) {
     let tooltip = d3.select("#tooltip");
     tooltip.select("#C1").text(edge_element.left.text);
     tooltip.select("#C2").text(edge_element.right.text);
+    
+    tooltip.select("#qtd_1").text(-1);
+    tooltip.select("#max_1").text(-2);
+    tooltip.select("#min_1").text(-3);
+    
+    tooltip.select("#qtd_2").text(-1);
+    tooltip.select("#max_2").text(-2);
+    tooltip.select("#min_2").text(-3);
 
-    tooltip
-        //.style("border", "2px solid black")
-       // .style("left", x + (margin.left - (tooltip.node().getBoundingClientRect().width / 2)) + "px")
-        .style("left",  x + "px")
+    tooltip.style("left",  x + "px")
         .style("top",   y + "px")
         .style('visibility', "visible")
         .classed("hidden", false)
-    //<button type="button">Click Me!</button>
-    
-
 }
 
 function hideTooltip() {

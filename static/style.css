@@ -1,3 +1,40 @@
-/*{
-    width: 100%;
+.chart_content {
+    border-width:2px;
+    border-style:solid;
+    border-color:black;
+    width:600px; 
+    max-width:600px; 
+    display: 
+    inline-block;
+}
+
+.tooltip {
+    visibility: hidden; 
+    left: 0px; 
+    top: 0px; 
+    position: absolute; 
+    cursor: default; 
+    border-radius: 5px; 
+    background: left top repeat white; 
+    padding: 3px; 
+    border: 2px solid rgb(23, 162, 184);
+}
+
+.spam_placeholder {
+    font-size: 14px;
+    color: rgb(23, 162, 184);
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+.spam_element {
+    font-size: 13px; 
+    color: black; 
+    padding-right: 30px;
+}
+
+.tooltip_button {
+    display: block; 
+    margin: 0px auto; 
+    border-radius: 5px;
 }
