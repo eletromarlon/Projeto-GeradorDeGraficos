@@ -15,37 +15,52 @@
 
 <body class="bg-light">
     
-    <div class="tooltip" id="tooltip">
-        <span id="C1" class="spam_placeholder"> C1</span> 
-        <span id="C2" class="spam_placeholder"> C1</span> 
-        <hr style="border: 1px solid rgb(23, 162, 184);">
+    <div class="tooltip bg-white" id="tooltip">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <span id="C1" class="h5 text-dark font-weight-bold"> C1</span> 
+                </div>
+                <div class="col text-center">
+                    <span id="C2" class="h5 text-dark font-weight-bold"> C1</span> 
+                </div>
+            </div>
+        </div>
+        <!--<hr style="border: 1px solid rgb(23, 162, 184);">-->
+        <hr class="border-secondary border-5 opacity-75">
         <br>
-
-        <span class="spam_placeholder"> Quant.:</span> 
-        <span class="spam_element" id="qtd_1" > 0 </span> 
-        <br>
-        <span class="spam_placeholder"> Max</span> 
-        <span class="spam_element" id="max_1" > 0 </span> 
-        <br>
-        <span class="spam_placeholder"> Min</span> 
-        <span class="spam_element" id="min_1" > 0 </span> 
-        <br>
-        <span class="spam_placeholder"> Média</span> 
-        <span class="spam_element" id="avg_1" > 0 </span> 
-        <br>
-
-        <span class="spam_placeholder"> Quant.:</span> 
-        <span class="spam_element" id="qtd_2" > 0 </span> 
-        <br>
-        <span class="spam_placeholder"> Max</span> 
-        <span class="spam_element" id="max_2" > 0 </span> 
-        <br>
-        <span class="spam_placeholder"> Min</span> 
-        <span class="spam_element" id="min_2" > 0 </span> 
-        <br>
-        <span class="spam_placeholder"> Média</span> 
-        <span class="spam_element" id="avg_2" > 0 </span> 
-        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <span class="spam_element" id="qtd_1" > 0 </span> 
+                    <br>
+                    <span class="spam_element" id="max_1" > 0 </span> 
+                    <br>
+                    <span class="spam_element" id="min_1" > 0 </span> 
+                    <br>
+                    <span class="spam_element" id="avg_1" > 0 </span> 
+                    <br>
+                </div>
+                <div class="vr text-info"></div>
+                <div class="col text-center">
+                    <span class="text-primary font-weight-bold"> Quant.:</span><br>
+                    <span class="text-danger font-weight-bold"> Max</span> <br>
+                    <span class="text-danger font-weight-bold"> Min</span> <br>
+                    <span class="text-success font-weight-bold"> Média</span> <br>
+                </div>
+                <div class="vr"></div>
+                <div class="col text-center">
+                    <span class="spam_element" id="qtd_2" > 0 </span> 
+                    <br>
+                    <span class="spam_element" id="max_2" > 0 </span> 
+                    <br>
+                    <span class="spam_element" id="min_2" > 0 </span> 
+                    <br>
+                    <span class="spam_element" id="avg_2" > 0 </span> 
+                    <br>
+                </div>
+            </div>
+        </div>
 
         <button id="tooltip_button" class="btn btn-outline-primary btn-sm tooltip_button">Comparar</button>
 
