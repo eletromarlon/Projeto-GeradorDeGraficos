@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 import conexao
 
 app = Flask(__name__)
@@ -86,8 +86,7 @@ def connectionBd1():
                 password1 = "CONNECTION ERROR",
                 id1 = "CONNECTION ERROR",
                 port1 = "CONNECTION ERROR",
-                bd1 = "CONNECTION ERROR",
-                consulta1 = bdOut1   
+                bd1 = "CONNECTION ERROR"   
             )
 
         return render_template(
@@ -101,8 +100,7 @@ def connectionBd1():
             password2 = bdData2["password"],
             id2 = bdData2["id"],
             port2 = bdData2["port"],
-            bd2 = bdData2["bdType"],
-            consulta1 = bdOut1  
+            bd2 = bdData2["bdType"] 
         )
 
 #Rora de segunda conexao, as variaveis globais visam manter as informações para outras consultas desejadas pelo usuário
@@ -149,8 +147,7 @@ def connectionBd2():
                 password2 = "CONNECTION ERROR",
                 id2 = "CONNECTION ERROR",
                 port2 = "CONNECTION ERROR",
-                bd2 = "CONNECTION ERROR",
-                consulta2 = bdOut2   
+                bd2 = "CONNECTION ERROR"
             )
 
         return render_template(
@@ -164,8 +161,7 @@ def connectionBd2():
             password2 = bdData2["password"],
             id2 = bdData2["id"],
             port2 = bdData2["port"],
-            bd2 = bdData2["bdType"],
-            consulta2 = bdOut2   
+            bd2 = bdData2["bdType"]
         )
 
 @app.route('/consultasql', methods=['GET', 'POST'])
@@ -206,8 +202,7 @@ def consultasql():
                     password2 = bdData2["password"],
                     id2 = bdData2["id"],
                     port2 = bdData2["port"],
-                    bd2 = bdData2["bdType"],
-                    consulta1 = "ALGUM ERRO OCORREU NA CONSULTA"   
+                    bd2 = bdData2["bdType"]  
                )
             return render_template(
                     'index.html',
@@ -220,8 +215,7 @@ def consultasql():
                     password2 = bdData2["password"],
                     id2 = bdData2["id"],
                     port2 = bdData2["port"],
-                    bd2 = bdData2["bdType"],
-                    consulta1 = bdOut1   
+                    bd2 = bdData2["bdType"]
                )
         else:
             if (bdData2 != None and consulta2 != None):
@@ -246,8 +240,7 @@ def consultasql():
                         password2 = bdData2["password"],
                         id2 = bdData2["id"],
                         port2 = bdData2["port"],
-                        bd2 = bdData2["bdType"],
-                        consulta1 = "ALGUM ERRO OCORREU NA CONSULTA"   
+                        bd2 = bdData2["bdType"]  
                     )
             else:
                 return render_template(
@@ -265,8 +258,7 @@ def consultasql():
                 password2 = bdData2["password"],
                 id2 = bdData2["id"],
                 port2 = bdData2["port"],
-                bd2 = bdData2["bdType"],
-                consulta2 = bdOut2
+                bd2 = bdData2["bdType"]
             )
     else:
         return render_template('index.html')
@@ -295,7 +287,8 @@ def getGenerator(valor):
             except Exception as e:
                 #print(consulta)
                 print(f"something went wrong! - {e}")
-                return "Error! Falhou na consulta em alguma etapa do banco 1"
+                errosql = f"Erro! - {e} - (api/colunas/)"
+                return { "erro": errosql}
         else:
             if valor == '2':
                 try:
@@ -309,8 +302,9 @@ def getGenerator(valor):
                         resposta = conexao.sqLiteConnection(consulta)
                     #print("valor em respota", resposta)
                     return jsonify(resposta[1])
-                except:
-                    return "Error! Falhou na consulta em alguma etapa do banco 2"
+                except Exception as e:
+                    errosql = f"Erro! - {e} - (api/colunas/)"
+                    return { "erro": errosql}
             else:
                 return "Error! Parece que nao tem nenhum banco conectado ou a requisição esta errada para os bancos"
 
@@ -373,8 +367,12 @@ def postGenerator(valor):
                     resposta = conexao.sqLiteConnection(consulta)
                 #print("valor em respota", resposta)
                 return jsonify(resposta[0])
-            except:
-                return "Error! Falhou na consulta em alguma etapa do banco 1"
+            except Exception as e:
+                if bdData1['user'] == '':
+                    errosql = f"(banco desconectado)"
+                else:
+                    errosql = f"Erro! - {e}"
+                return { "erro": errosql}
         else:
             if valor == '2':
                 try:
@@ -393,8 +391,12 @@ def postGenerator(valor):
                         resposta = conexao.sqLiteConnection(consulta)
                     #print("valor em respota", resposta)
                     return jsonify(resposta[0])
-                except:
-                    return "Error! Falhou na consulta em alguma etapa do banco 2"
+                except Exception as e:
+                    if bdData2['user'] == '':
+                        errosql = f"(banco desconectado)"
+                    else:
+                        errosql = f"Erro! - {e}"
+                    return { "erro": errosql}
             else:
                 return "Error! Parece que nao tem nenhum banco conectado ou a requisição esta errada para os bancos"
 
