@@ -42,6 +42,8 @@ def postgresConnection(host, dbname, user, password, consulta):
     # for record in cursor:
     #     print(record)
     column_names = [desc[0] for desc in cursor.description]
-    return (cursor.fetchall(),column_names)
+    valor = cursor.fetchall()
     connection.commit()
     connection.close()
+    return (valor,column_names)
+    

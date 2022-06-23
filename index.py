@@ -290,10 +290,10 @@ def getGenerator(valor):
                     resposta = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
                 if bdData1["bdType"] == 'SQLite':
                     resposta = conexao.sqLiteConnection(consulta)
-                print("valor em respota", resposta)
+                #print("valor em respota", resposta)
                 return jsonify(resposta[1])
             except Exception as e:
-                print(consulta)
+                #print(consulta)
                 print(f"something went wrong! - {e}")
                 return "Error! Falhou na consulta em alguma etapa do banco 1"
         else:
@@ -307,7 +307,7 @@ def getGenerator(valor):
                         resposta = conexao.postgresConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
                     if bdData2["bdType"] == 'SQLite':
                         resposta = conexao.sqLiteConnection(consulta)
-                    print("valor em respota", resposta)
+                    #print("valor em respota", resposta)
                     return jsonify(resposta[1])
                 except:
                     return "Error! Falhou na consulta em alguma etapa do banco 2"
@@ -353,8 +353,6 @@ def postGenerator(valor):
     sql = content['SQL']
     value = content['value']
     consulta = 'select max(' + value + ') as max, min(' + value + ') as min, count(' + value + ') as count, avg(' + value + ') as avg from  (' + sql + ') as result'
-    
-    print(consulta)
 
     if request.method == 'POST':
         if valor == '1':
@@ -362,12 +360,18 @@ def postGenerator(valor):
                 if bdData1["bdType"] == 'Oracle':
                     resposta = conexao.oracleConnection(bdData1["user"], bdData1["password"], bdData1["id"], consulta) 
                 if bdData1["bdType"] == 'MySQL':
+                    for i in value:
+                        if i == '"':
+                            value = value.replace(i, '')
+                    print("valor em value", value)
+                    consulta = 'select max(' + value + ') as max, min(' + value + ') as min, count(' + value + ') as count, avg(' + value + ') as avg from  (' + sql + ') as result'
+                    print("consulta feita no mysql\n", consulta)
                     resposta = conexao.mysqlConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
                 if bdData1["bdType"] == 'PostgreSQL':
                     resposta = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
                 if bdData1["bdType"] == 'SQLite':
                     resposta = conexao.sqLiteConnection(consulta)
-                print("valor em respota", resposta)
+                #print("valor em respota", resposta)
                 return jsonify(resposta[0])
             except:
                 return "Error! Falhou na consulta em alguma etapa do banco 1"
@@ -377,12 +381,17 @@ def postGenerator(valor):
                     if bdData2["bdType"] == 'Oracle':
                         resposta = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData2["id"], consulta) 
                     if bdData2["bdType"] == 'MySQL':
+                        for i in value:
+                            if i == '"':
+                                value = value.replace(i, '')
+                        consulta = 'select max(' + value + ') as max, min(' + value + ') as min, count(' + value + ') as count, avg(' + value + ') as avg from  (' + sql + ') as result'
+                        print("consulta feita no mysql\n", consulta)
                         resposta = conexao.mysqlConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
                     if bdData2["bdType"] == 'PostgreSQL':
                         resposta = conexao.postgresConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
                     if bdData2["bdType"] == 'SQLite':
                         resposta = conexao.sqLiteConnection(consulta)
-                    print("valor em respota", resposta)
+                    #print("valor em respota", resposta)
                     return jsonify(resposta[0])
                 except:
                     return "Error! Falhou na consulta em alguma etapa do banco 2"

@@ -77,8 +77,8 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="dropdown">
-                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                <div class="dropdown text-center">
+                    <button class="btn btn-info dropdown-toggle text-center" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Credenciais do Banco
                     </button>
@@ -123,13 +123,13 @@
                     </div>
                 </div>
 
-                <div class="mt-5">
+                <div class="mt-2">
                     <label for="consultasql">Consulta SQL</label>
                     <!--<input name="consultasql" type="text" class="form-control" id="consultasql"
                         aria-describedby="consultasql" placeholder="Insert your query">-->
                     <div class="code_text_area" id="text_area_1" name="sql1"></div>
                     
-                    <button id="button_exec_1" class="btn btn-primary mt-3">
+                    <button id="button_exec_1" class="btn btn-primary mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
                             <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
                         </svg> 
@@ -137,7 +137,7 @@
                     </button>
                     <small id="consultasql" class="form-text text-muted">Consulta ao banco 1</small>
                 </div>
-                <div class="col mt-5">
+                <div class="col mt-2">
                     <p class="lead text-center">Informações do Banco de Dados 1</p>
                     <ul class="list-group mt-2">
                         <li class="list-group-item">Usuario: {{user1}}</li>
@@ -163,10 +163,9 @@
                     <p class="h1 text-center"><strong>A</strong></p>
                 </div>-->
             <div class="col">
-                <div class="dropdown">
-                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Credenciais do Banco
+                <div class="dropdown text-center">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Credenciais do Banco
                     </button>
                     <div class="dropdown-menu" style="background-color: #c0e0e7;">
                         <form action="/conexao2" method="post" class="px-4 py-3">
@@ -208,14 +207,14 @@
                         <a class="dropdown-item" href="/contacts">Algum erro?</a>
                     </div>
                 </div>
-                <div class="mt-5">
+                <div class="mt-2">
                     <label for="consultasql">Consulta SQL</label>
                     <!--<input name="consultasql" type="text" class="form-control" id="consultasql"
                         aria-describedby="consultasql" placeholder="Insert your query">-->
 
                     <div class="code_text_area" id="text_area_2" name="sql2"></div>
                     
-                    <button id="button_exec_2" class="btn btn-primary mt-3">
+                    <button id="button_exec_2" class="btn btn-primary mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
                             <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
                         </svg>
@@ -223,7 +222,7 @@
                     </button>
                     <small id="consultasql" class="form-text text-muted">Consulta ao banco 2</small>
                 </div>
-                <div class="col mt-5">
+                <div class="col mt-2">
                     <p class="lead text-center">Informações do Banco de Dados 2</p>
                     <ul class="list-group mt-2">
                         <li class="list-group-item">Usuario: {{user2}}</li>
@@ -236,19 +235,7 @@
             </div>
         </div>
         <div class="row align-items-center">
-            <!--<div class="col">
-                    <form action="/" method="post">
-                        <label for="consultasql">Consulta SQL</label>
-                        <input name="consultasql" type="text" class="form-control" id="consultasql" aria-describedby="consultasql" placeholder="Insert your query">
-                        <button type="submit" class="btn btn-primary mt-1">Registrar</button>
-                        <small id="consultasql" class="form-text text-muted">Ou utilize uma consulta pré-pronta abaixo.</small>
-                    </form>
-                    <form>
-                        <p>Colocar consutas default</p>
-                    </form>
-                </div>-->
-            <div class="col">
-                <!--<p class="text-center">Valores retornados</p>-->
+            <!-- <div class="col">
                 <div class="text-center">
                     <label for="disabledTextInput" class="form-label text-info"><strong>Retorno Consulta 1</strong></label><br>
                     <label for="disabledTextInput" class="form-label">{{consulta1}}</label>
@@ -257,18 +244,7 @@
                     <label for="disabledTextInput" class="form-label text-info"><strong>Retorno Consulta 2</strong></label><br>
                     <label for="disabledTextInput" class="form-label">{{consulta2}}</label>
                 </div>
-            </div>
-            <!--<div class="col">
-                    <form action="/" method="post">
-                        <label for="consultasql">Consulta SQL</label>
-                        <input name="consultasql" type="text" class="form-control" id="consultasql" aria-describedby="consultasql" placeholder="Insert your query">
-                        <button type="submit" class="btn btn-primary mt-1">Registrar</button>
-                        <small id="consultasql" class="form-text text-muted">Ou utilize uma consulta pré-pronta abaixo.</small>
-                    </form>
-                    <form>
-                        <p>Colocar consutas default</p>
-                    </form>
-                </div>-->
+            </div> -->
         </div>
     </div>
 

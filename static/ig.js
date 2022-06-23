@@ -455,10 +455,10 @@ function hideTooltip() {
     tooltip.select("#C1").text("");
     tooltip.select("#C2").text("");
 
-    tooltip.select("#max_q").style("color","#007bff")
-    tooltip.select("#min_q").style("color","#007bff")
-    tooltip.select("#qtd_q").style("color","#007bff")
-    tooltip.select("#avg_q").style("color","#007bff")
+    tooltip.select("#max_q").style("color","#AFCEF5")
+    tooltip.select("#min_q").style("color","#AFCEF5")
+    tooltip.select("#qtd_q").style("color","#AFCEF5")
+    tooltip.select("#avg_q").style("color","#AFCEF5")
 
 }
 
