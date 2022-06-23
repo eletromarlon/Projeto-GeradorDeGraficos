@@ -292,13 +292,9 @@ def getGenerator(valor):
                     resposta = conexao.sqLiteConnection(consulta)
                 print("valor em respota", resposta)
                 return jsonify(resposta[1])
-<<<<<<< HEAD
             except Exception as e:
                 print(consulta)
                 print(f"something went wrong! - {e}")
-=======
-            except:
->>>>>>> 8a5fcb2bbf4199b7c61d8d9f85b6b20ff8c23f96
                 return "Error! Falhou na consulta em alguma etapa do banco 1"
         else:
             if valor == '2':
@@ -357,6 +353,7 @@ def postGenerator(valor):
     sql = content['SQL']
     value = content['value']
     consulta = 'select max(' + value + ') as max, min(' + value + ') as min, count(' + value + ') as count, avg(' + value + ') as avg from  (' + sql + ') as result'
+    
     print(consulta)
 
     if request.method == 'POST':

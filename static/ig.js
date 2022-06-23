@@ -34,6 +34,14 @@ function getDataDatabase2(){
 
 function setup(){
 
+    var editor1 = ace.edit("text_area_1");
+    editor1.setTheme("ace/theme/SQL Server");
+    editor1.session.setMode("ace/mode/sql");
+
+    var editor2 = ace.edit("text_area_2");
+    editor2.setTheme("ace/theme/SQL Server");
+    editor2.session.setMode("ace/mode/sql");
+
     const svg = d3.select("#chart")
     .append("div")
     .classed("svg-container", true) 
@@ -97,37 +105,41 @@ function setup(){
 
    
     d3.select("#button_exec_1").on("click", function(event) {
-        const SQL = d3.select("#text_area_1").node().value 
+        const SQL = editor1.getValue()
         console.log("CLICK EXEC 1: " + SQL)
-        SQL1 = SQL;
         clearSide(svg, 1)
-        requestColumns(svg, 1, SQL)
+        if(SQL != null){
+            SQL1 = SQL;
+            requestColumns(svg, 1, SQL)
+        }
     })
 
     d3.select("#button_exec_2").on("click", function(event) {
-        const SQL = d3.select("#text_area_2").node().value 
-        SQL2 = SQL;
+        const SQL = editor2.getValue()
         console.log("CLICK EXEC 2: " + SQL)
         clearSide(svg, 2)
-        requestColumns(svg, 2, SQL)
+        if(SQL != null){
+            SQL2 = SQL;
+            requestColumns(svg, 2, SQL)
+        }
     })
 
     if(debug)drawDebugLines(svg);
 }
 
-function requestColumns(svg, db, SQL) {
+function requestColumns(svg, db, SQL_H) {
     fetch('/api/colunas/'+db, {
         method: 'POST',
         headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ SQL: SQL.replaceAll(";", "") })
+        body: JSON.stringify({ SQL: SQL_H.replaceAll(";", "") })
     }).then(res => res.json())
     .then(res => loadColumns(svg, db, res));
 }
 
-async function requestCompare(db, SQL, value) {
+async function requestCompare(db, SQL_H, value_H) {
     let response = await fetch('/api/generate/'+db, {
         method: 'POST',
         headers: {
@@ -135,7 +147,7 @@ async function requestCompare(db, SQL, value) {
             'Content-Type': 'application/json'
         },
         async: false,
-        body: JSON.stringify({ SQL: SQL.replaceAll(";", ""), value: "\""+value+"\"" })
+        body: JSON.stringify({ SQL: SQL_H.replaceAll(";", ""), value: "\""+value_H+"\"" })
    
     }).catch(function(err){
         console.error("requestCompare: " + err);
@@ -149,14 +161,14 @@ function clearSide(svg, db){
     hideTooltip()
     if(db == 1){
         for (x in ELEMENTS_LEFT) {   
-            ELEMENTS_LEFT[x].circle.remove();
-            ELEMENTS_LEFT[x].text.remove();
+            ELEMENTS_LEFT[x].circle_g.remove();
+            ELEMENTS_LEFT[x].text_g.remove();
         }
         ELEMENTS_LEFT = {};
     }else{
         for (x in ELEMENTS_RIGHT) {   
-            ELEMENTS_RIGHT[x].circle.remove();
-            ELEMENTS_RIGHT[x].text.remove();
+            ELEMENTS_RIGHT[x].circle_g.remove();
+            ELEMENTS_RIGHT[x].text_g.remove();
         }
         ELEMENTS_RIGHT = {};
     }
@@ -187,6 +199,7 @@ function loadColumns(svg, db,columns){
         drawElement(svg, elements[columns[i]]);
         dy = dy + columns_space;
     }
+    
 }
 
 
@@ -223,8 +236,8 @@ function drawElement(svg, element){
         .attr("r", circle_radius)
         .attr("fill", "#17a2b8")
         
-        element.circle = circle
-        element.text =  text
+        element.circle_g = circle
+        element.text_g =  text
 
         if(element.side == "left"){
             circle.attr("cx", element.x + columns_width - columns_margin + 10)
@@ -350,19 +363,25 @@ function showTooltip(edge_element) {
         console.log("compare clicked")
         //edge_element
         if(SQL1 != null && SQL2 != null){
+            finish_left = false
+            finish_right = false
+
             requestCompare(1,SQL1,edge_element.left.text).then(function(res){
-                
-                tooltip.select("#max_1").text(res[0][0]);
-                tooltip.select("#min_1").text(res[0][1]);
-                tooltip.select("#qtd_1").text(res[0][2]);
-                tooltip.select("#avg_1").text(res[0][3]);
+                finish_left = true
+                tooltip.select("#max_1").text(fString(res[0][0]));
+                tooltip.select("#min_1").text(fString(res[0][1]));
+                tooltip.select("#qtd_1").text(fString(res[0][2]));
+                tooltip.select("#avg_1").text(fString(res[0][3]));
+                asynReview(tooltip)
             });
 
             requestCompare(2,SQL2,edge_element.right.text).then(function(res){
-                tooltip.select("#max_2").text(res[0][0]);
-                tooltip.select("#min_2").text(res[0][1]);
-                tooltip.select("#qtd_2").text(res[0][2]);
-                tooltip.select("#avg_2").text(res[0][3]);
+                finish_right = true
+                tooltip.select("#max_2").text(fString(res[0][0]));
+                tooltip.select("#min_2").text(fString(res[0][1]));
+                tooltip.select("#qtd_2").text(fString(res[0][2]));
+                tooltip.select("#avg_2").text(fString(res[0][3]));
+                asynReview(tooltip)
             });
 
         }
@@ -377,18 +396,70 @@ function showTooltip(edge_element) {
     */
 }
 
+let finish_left = false
+let finish_right = false
+
+function asynReview(tooltip){
+    if(finish_left && finish_right){
+        
+        
+        if( tooltip.select("#max_1").text() ===
+            tooltip.select("#max_2").text()){
+            console.log("testes")
+            tooltip.select("#max_q").style("color","green")
+        }else{
+            tooltip.select("#max_q").style("color","red")
+        }
+
+        if( tooltip.select("#min_1").text() ===
+            tooltip.select("#min_2").text()){
+            tooltip.select("#min_q").style("color","green")
+        }else{
+            tooltip.select("#min_q").style("color","red")
+        }
+
+        if( tooltip.select("#qtd_1").text() ===
+            tooltip.select("#qtd_2").text()){
+            tooltip.select("#qtd_q").style("color","green")
+        }else{
+            tooltip.select("#qtd_q").style("color","red")
+        }
+
+        if( tooltip.select("#avg_1").text() ===
+            tooltip.select("#avg_2").text()){
+            tooltip.select("#avg_q").style("color","green")
+        }else{
+            tooltip.select("#avg_q").style("color","red")
+        }
+
+        finish_left = false
+        finish_right = false
+    }
+}
+
+
 function hideTooltip() {
     is_tooltip_visible = false;
     const tooltip = d3.select("#tooltip")
         .classed("hidden", true)
         .style('visibility', "hidden")
     
-    tooltip.select("#max_1").text(0);
-    tooltip.select("#min_1").text(0);
-    tooltip.select("#qtd_1").text(0);
-    tooltip.select("#avg_1").text(0);
+    tooltip.select("#max_1").text("");
+    tooltip.select("#min_1").text("");
+    tooltip.select("#qtd_1").text("");
+    tooltip.select("#avg_1").text("");
+    tooltip.select("#max_2").text("");
+    tooltip.select("#min_2").text("");
+    tooltip.select("#qtd_2").text("");
+    tooltip.select("#avg_2").text("");
     tooltip.select("#C1").text("");
     tooltip.select("#C2").text("");
+
+    tooltip.select("#max_q").style("color","#007bff")
+    tooltip.select("#min_q").style("color","#007bff")
+    tooltip.select("#qtd_q").style("color","#007bff")
+    tooltip.select("#avg_q").style("color","#007bff")
+
 }
 
 
@@ -448,5 +519,19 @@ function bound(value, min, max) {
         return max;
     }
     return value;
+}
+
+function fString(s){
+    const max_s = 10;
+    if(s.length >= max_s - 3){
+        let new_s = "";
+        for (let index = 0; index < max_s - 3; index++) {
+            new_s += s.charAt(index)
+        }
+        new_s += "..." 
+        return new_s
+    }else{
+        return s;
+    }
 }
 setup();
