@@ -13,6 +13,7 @@ def oracleConnection(username, password, dsn, query):
     cursor = connection.cursor()
     for row in cursor.execute(query):
         saida.append(row[0])
+    column_names = [desc[0] for desc in cursor.description]
     connection.commit()
     connection.close()
     return saida
@@ -22,18 +23,22 @@ def mysqlConnection(host, dbname, user, password, consulta):
     cursor = connection.cursor()
     cursor.execute(consulta)
     column_names = [desc[0] for desc in cursor.description]
-    return (cursor.fetchall(), column_names)
+    valor = cursor.fetchall()
     connection.close()
+    return (valor, column_names)
+    
 
 def sqLiteConnection(consulta):
     connection = sqlite3.Connection("teste.db")
     cursor = connection.cursor()
     cursor.execute(consulta)
     column_names = [desc[0] for desc in cursor.description]
-    return (cursor.fetchall(), column_names)
+    valor = cursor.fetchall()
+    connection.close()
+    return (valor, column_names)
     # for row in cursor.execute(consulta):
     #     print(row)
-    connection.close()
+    
 
 def postgresConnection(host, dbname, user, password, consulta):
     connection = psycopg.connect("host=" + host + " dbname=" + dbname + " user=" + user + " password=" + password)
