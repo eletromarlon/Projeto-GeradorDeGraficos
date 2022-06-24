@@ -103,8 +103,13 @@
                                 </div>
                                 <div class="">
                                     <label for="disabledTextInput" class="form-label">Host</label>
-                                    <input name="port1" type="text" id="disabledTextInput" class="form-control"
+                                    <input name="host1" type="text" id="disabledTextInput" class="form-control"
                                         placeholder="Host de conexao com o banco">
+                                </div>
+                                <div class="">
+                                    <label for="disabledTextInput" class="form-label">Porta</label>
+                                    <input name="port1" type="text" id="disabledTextInput" class="form-control"
+                                        placeholder="Porta de conexao com o banco">
                                 </div>
                                 <div class="">
                                     <label for="disabledSelect" class="form-label">Selecione o tipo do DB</label>
@@ -137,13 +142,17 @@
                     </button>
                     <small id="consultasql" class="form-text text-muted">Consulta ao banco 1</small>
                 </div>
+                <div class="col">
+                    <span id="errosql1" class="text-danger font-italic"></span>
+                </div>
                 <div class="col mt-2">
                     <p class="lead text-center">Informações do Banco de Dados 1</p>
                     <ul class="list-group mt-2">
                         <li class="list-group-item">Usuario: {{user1}}</li>
                         <li class="list-group-item"><input name="password2" type="password" id="disabledTextInput" class="form-control" value="{{password1}}"></li>
                         <li class="list-group-item">SID: {{id1}}</li>
-                        <li class="list-group-item">Posta: {{port1}}</li>
+                        <li class="list-group-item">Host: {{host1}}</li>
+                        <li class="list-group-item">Porta: {{port1}}</li>
                         <li class="list-group-item">Banco: {{bd1}}</li>
                     </ul>
                 </div>
@@ -188,8 +197,13 @@
                                 </div>
                                 <div class="">
                                     <label for="disabledTextInput" class="form-label">Host</label>
-                                    <input name="port2" type="text" id="disabledTextInput" class="form-control"
+                                    <input name="host2" type="text" id="disabledTextInput" class="form-control"
                                         placeholder="Host de conexao com o banco">
+                                </div>
+                                <div class="">
+                                    <label for="disabledTextInput" class="form-label">Porta</label>
+                                    <input name="port2" type="text" id="disabledTextInput" class="form-control"
+                                        placeholder="Porta de conexao com o banco">
                                 </div>
                                 <div class="">
                                     <label for="disabledSelect" class="form-label">Selecione o tipo do DB</label>
@@ -222,13 +236,17 @@
                     </button>
                     <small id="consultasql" class="form-text text-muted">Consulta ao banco 2</small>
                 </div>
+                <div class="col">
+                    <span id="errosql2" class="text-danger font-italic" ></span>
+                </div>
                 <div class="col mt-2">
                     <p class="lead text-center">Informações do Banco de Dados 2</p>
                     <ul class="list-group mt-2">
                         <li class="list-group-item">Usuario: {{user2}}</li>
                         <li class="list-group-item"><input name="password2" type="password" id="disabledTextInput" class="form-control" value="{{password2}}"></li>
                         <li class="list-group-item">SID: {{id2}}</li>
-                        <li class="list-group-item">Posta: {{port2}}</li>
+                        <li class="list-group-item">Host: {{host2}}</li>
+                        <li class="list-group-item">Porta: {{port2}}</li>
                         <li class="list-group-item">Banco: {{bd2}}</li>
                     </ul>
                 </div>
@@ -245,6 +263,14 @@
                     <label for="disabledTextInput" class="form-label">{{consulta2}}</label>
                 </div>
             </div> -->
+        </div>
+    </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <div id="table_id">
+                </div>
+            </div>
         </div>
     </div>
 

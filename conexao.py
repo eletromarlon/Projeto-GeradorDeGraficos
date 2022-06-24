@@ -18,8 +18,9 @@ def oracleConnection(username, password, dsn, query):
     connection.close()
     return saida
 
-def mysqlConnection(host, dbname, user, password, consulta):
-    connection = mysql.connector.connect(host=host, database=dbname, user=user, password=password)
+def mysqlConnection(host, port, dbname, user, password, consulta):
+    connection = mysql.connector.connect(host='localhost', port=port, database=dbname, user=user, password=password)
+    # connection = mysql.connector.connect(host=host, database=dbname, user=user, password=password)
     cursor = connection.cursor()
     cursor.execute(consulta)
     column_names = [desc[0] for desc in cursor.description]
@@ -40,8 +41,8 @@ def sqLiteConnection(consulta):
     #     print(row)
     
 
-def postgresConnection(host, dbname, user, password, consulta):
-    connection = psycopg.connect("host=" + host + " dbname=" + dbname + " user=" + user + " password=" + password)
+def postgresConnection(host, port, dbname, user, password, consulta):
+    connection = psycopg.connect("host=" + host + " port="+ port + " dbname=" + dbname + " user=" + user + " password=" + password)
     cursor = connection.cursor()
     cursor.execute(consulta)
     # for record in cursor:

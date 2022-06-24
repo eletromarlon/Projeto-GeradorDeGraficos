@@ -56,6 +56,7 @@ def connectionBd1():
             "user": request.form.get('user1'),
             "password": request.form.get('password1'),
             "id": request.form.get('id1'),
+            "host": request.form.get('host1'),
             "port": request.form.get('port1'),
             "bdType": request.form.get('bd1')
         } 
@@ -64,6 +65,7 @@ def connectionBd1():
                 "user": "",
                 "password": "",
                 "id": "",
+                "host": "",
                 "port": "",
                 "bdType": ""
             }
@@ -73,9 +75,9 @@ def connectionBd1():
             if bdData1["bdType"] == 'Oracle':
                 bdOut1 = conexao.oracleConnection(bdData1["user"], bdData1["password"], bdData1["id"], "SELECT 1") 
             if bdData1["bdType"] == 'MySQL':
-                bdOut1 = conexao.mysqlConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], "SELECT 1")
+                bdOut1 = conexao.mysqlConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], "SELECT 1")
             if bdData1["bdType"] == 'PostgreSQL':
-                bdOut1 = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], "SELECT 1")
+                bdOut1 = conexao.postgresConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], "SELECT 1")
             if bdData1["bdType"] == 'SQLite':
                 bdOut1 = conexao.sqLiteConnection("SELECT 1")
             # print("valor em bddata1", bdOut1)
@@ -85,6 +87,7 @@ def connectionBd1():
                 user1 = "CONNECTION ERROR",
                 password1 = "CONNECTION ERROR",
                 id1 = "CONNECTION ERROR",
+                host1 = "CONNECTION ERROR",
                 port1 = "CONNECTION ERROR",
                 bd1 = "CONNECTION ERROR"   
             )
@@ -94,11 +97,13 @@ def connectionBd1():
             user1 = bdData1["user"],
             password1 = bdData1["password"],
             id1 = bdData1["id"],
+            host1 = bdData1["host"],
             port1 = bdData1["port"],
             bd1 = bdData1["bdType"],
             user2 = bdData2["user"],
             password2 = bdData2["password"],
             id2 = bdData2["id"],
+            host2 = bdData2["host"],
             port2 = bdData2["port"],
             bd2 = bdData2["bdType"] 
         )
@@ -115,6 +120,7 @@ def connectionBd2():
             "user": request.form.get('user2'),
             "password": request.form.get('password2'),
             "id": request.form.get('id2'),
+            "host": request.form.get('host2'),
             "port": request.form.get('port2'),
             "bdType": request.form.get('bd2')
         }
@@ -123,6 +129,7 @@ def connectionBd2():
                 "user": "",
                 "password": "",
                 "id": "",
+                "host": "",
                 "port": "",
                 "bdType": ""
             }
@@ -133,9 +140,9 @@ def connectionBd2():
             if bdData2["bdType"] == 'Oracle':
                 bdOut2 = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData["id"], "SELECT 1") 
             if bdData2["bdType"] == 'MySQL':
-                bdOut2 = conexao.mysqlConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], "SELECT 1")
+                bdOut2 = conexao.mysqlConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], "SELECT 1")
             if bdData2["bdType"] == 'PostgreSQL':
-                bdOut2 = conexao.postgresConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], "SELECT 1")
+                bdOut2 = conexao.postgresConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], "SELECT 1")
             if bdData2["bdType"] == 'SQLite':
                 bdOut2 = conexao.sqLiteConnection("SELECT 1")
             
@@ -155,11 +162,13 @@ def connectionBd2():
             user1 = bdData1["user"],
             password1 = bdData1["password"],
             id1 = bdData1["id"],
+            host1 = bdData1["host"],
             port1 = bdData1["port"],
             bd1 = bdData1["bdType"],
             user2 = bdData2["user"],
             password2 = bdData2["password"],
             id2 = bdData2["id"],
+            host2 = bdData2["host"],
             port2 = bdData2["port"],
             bd2 = bdData2["bdType"]
         )
@@ -185,9 +194,9 @@ def consultasql():
                 if bdData1["bdType"] == 'Oracle':
                     bdOut1 = conexao.oracleConnection(bdData1["user"], bdData1["password"], bdData1["id"], consulta1) 
                 if bdData1["bdType"] == 'MySQL':
-                    bdOut1 = conexao.mysqlConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta1)
+                    bdOut1 = conexao.mysqlConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta1)
                 if bdData1["bdType"] == 'PostgreSQL':
-                    bdOut1 = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta1)
+                    bdOut1 = conexao.postgresConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta1)
                 if bdData1["bdType"] == 'SQLite':
                     bdOut1 = conexao.sqLiteConnection(consulta1)
             except:
@@ -223,9 +232,9 @@ def consultasql():
                     if bdData2["bdType"] == 'Oracle':
                         bdOut2 = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData["id"], consulta2) 
                     if bdData2["bdType"] == 'MySQL':
-                        bdOut2 = conexao.mysqlConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta2)
+                        bdOut2 = conexao.mysqlConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta2)
                     if bdData2["bdType"] == 'PostgreSQL':
-                        bdOut2 = conexao.postgresConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta2)
+                        bdOut2 = conexao.postgresConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta2)
                     if bdData2["bdType"] == 'SQLite':
                         bdOut2 = conexao.sqLiteConnection("SELECT 1")
                 except:
@@ -277,9 +286,9 @@ def getGenerator(valor):
                 if bdData1["bdType"] == 'Oracle':
                     resposta = conexao.oracleConnection(bdData1["user"], bdData1["password"], bdData1["id"], consulta) 
                 if bdData1["bdType"] == 'MySQL':
-                    resposta = conexao.mysqlConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+                    resposta = conexao.mysqlConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
                 if bdData1["bdType"] == 'PostgreSQL':
-                    resposta = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+                    resposta = conexao.postgresConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
                 if bdData1["bdType"] == 'SQLite':
                     resposta = conexao.sqLiteConnection(consulta)
                 #print("valor em respota", resposta)
@@ -295,9 +304,9 @@ def getGenerator(valor):
                     if bdData2["bdType"] == 'Oracle':
                         resposta = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData2["id"], consulta) 
                     if bdData2["bdType"] == 'MySQL':
-                        resposta = conexao.mysqlConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+                        resposta = conexao.mysqlConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
                     if bdData2["bdType"] == 'PostgreSQL':
-                        resposta = conexao.postgresConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+                        resposta = conexao.postgresConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
                     if bdData2["bdType"] == 'SQLite':
                         resposta = conexao.sqLiteConnection(consulta)
                     #print("valor em respota", resposta)
@@ -360,9 +369,9 @@ def postGenerator(valor):
                     print("valor em value", value)
                     consulta = 'select max(' + value + ') as max, min(' + value + ') as min, count(' + value + ') as count, avg(' + value + ') as avg from  (' + sql + ') as result'
                     print("consulta feita no mysql\n", consulta)
-                    resposta = conexao.mysqlConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+                    resposta = conexao.mysqlConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
                 if bdData1["bdType"] == 'PostgreSQL':
-                    resposta = conexao.postgresConnection(bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+                    resposta = conexao.postgresConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
                 if bdData1["bdType"] == 'SQLite':
                     resposta = conexao.sqLiteConnection(consulta)
                 #print("valor em respota", resposta)
@@ -384,9 +393,9 @@ def postGenerator(valor):
                                 value = value.replace(i, '')
                         consulta = 'select max(' + value + ') as max, min(' + value + ') as min, count(' + value + ') as count, avg(' + value + ') as avg from  (' + sql + ') as result'
                         print("consulta feita no mysql\n", consulta)
-                        resposta = conexao.mysqlConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+                        resposta = conexao.mysqlConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
                     if bdData2["bdType"] == 'PostgreSQL':
-                        resposta = conexao.postgresConnection(bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+                        resposta = conexao.postgresConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
                     if bdData2["bdType"] == 'SQLite':
                         resposta = conexao.sqLiteConnection(consulta)
                     #print("valor em respota", resposta)
