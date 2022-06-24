@@ -23,15 +23,6 @@ let is_tooltip_visible = false;
 let svg_click_flag = false;
 const debug = false;
 
-function getDataDatabase1(){
-    return ["ID", "Name", "Age"];
-}
-
-function getDataDatabase2(){
-    return ["aluno_id", "idade", "nome", "escola"];
-}
-
-
 function setup(){
 
     var editor1 = ace.edit("text_area_1");
@@ -125,6 +116,29 @@ function setup(){
     })
 
     if(debug)drawDebugLines(svg);
+
+    d3.select("#table_button").on("click",function(event){
+        console.log("Iniciando Comparação de Instâncias")
+    });   
+
+    const table = d3.select("#table_id");
+    table.append("th")
+        .attr("class", "table_header")
+        .text("Test 1");
+    table.append("th")
+        .attr("class", "table_header")
+        .text("Test 2");
+    
+    const linha = table.append("tr")
+
+    linha.append("td")
+        .attr("class", "table_line")
+        .text("dadoooos1")
+
+    linha.append("td")
+        .attr("class", "table_line")
+        .text("dadoooos2")
+
 }
 
 function requestColumns(svg, db, SQL_H) {
@@ -136,7 +150,15 @@ function requestColumns(svg, db, SQL_H) {
         },
         body: JSON.stringify({ SQL: SQL_H.replaceAll(";", "") })
     }).then(res => res.json())
-    .then(res => loadColumns(svg, db, res));
+    .then(function(res){
+        if(res.erro != null){
+            console.log(res.erro); // ERROR!
+            d3.select("#errosql"+db).text(res.erro)
+        }else{
+            loadColumns(svg, db, res)
+
+        }
+    });
 }
 
 async function requestCompare(db, SQL_H, value_H) {
@@ -150,7 +172,7 @@ async function requestCompare(db, SQL_H, value_H) {
         body: JSON.stringify({ SQL: SQL_H.replaceAll(";", ""), value: "\""+value_H+"\"" })
    
     }).catch(function(err){
-        console.error("requestCompare: " + err);
+        d3.select("#errosql"+db).text(err)
     });
     return response.json();
 }
@@ -341,6 +363,16 @@ function drawElement(svg, element){
     
 }
 
+function resetEdgesColor(){
+    for (x in EDGES) {   
+        EDGES[x].edge.attr("stroke", "#17a2b8") //#17a2b8
+        EDGES[x].left.circle_g.attr("fill", "#17a2b8")
+        EDGES[x].left.text_g.attr("fill", "#17a2b8")
+        EDGES[x].right.circle_g.attr("fill", "#17a2b8")
+        EDGES[x].right.text_g.attr("fill", "#17a2b8")
+        EDGES[x].isCandidate = false
+    }
+}
 
 
 
@@ -358,6 +390,12 @@ function showTooltip(edge_element) {
     let tooltip = d3.select("#tooltip");
     tooltip.select("#C1").text(edge_element.left.text);
     tooltip.select("#C2").text(edge_element.right.text);
+
+    if(edge_element.isCandidate){
+        tooltip.select("#tooltip_checkbox").property('checked', true);
+    }else{
+        tooltip.select("#tooltip_checkbox").property('checked', false);
+    }
     
     d3.select("#tooltip_button").on("click", function(event) {
         console.log("compare clicked")
@@ -367,21 +405,30 @@ function showTooltip(edge_element) {
             finish_right = false
 
             requestCompare(1,SQL1,edge_element.left.text).then(function(res){
-                finish_left = true
-                tooltip.select("#max_1").text(fString(res[0][0]));
-                tooltip.select("#min_1").text(fString(res[0][1]));
-                tooltip.select("#qtd_1").text(fString(res[0][2]));
-                tooltip.select("#avg_1").text(fString(res[0][3]));
-                asynReview(tooltip)
+                if(res.erro == null){
+                    finish_left = true
+                    tooltip.select("#max_1").text(fString(res[0][0]));
+                    tooltip.select("#min_1").text(fString(res[0][1]));
+                    tooltip.select("#qtd_1").text(fString(res[0][2]));
+                    tooltip.select("#avg_1").text(fString(res[0][3]));
+                    asynReview(tooltip)
+                }else{
+                    //console.log(res.erro)
+                    d3.select("#errosql1").text(res.erro)
+                }
             });
 
             requestCompare(2,SQL2,edge_element.right.text).then(function(res){
-                finish_right = true
-                tooltip.select("#max_2").text(fString(res[0][0]));
-                tooltip.select("#min_2").text(fString(res[0][1]));
-                tooltip.select("#qtd_2").text(fString(res[0][2]));
-                tooltip.select("#avg_2").text(fString(res[0][3]));
-                asynReview(tooltip)
+                if(res.erro == null){
+                    finish_right = true
+                    tooltip.select("#max_2").text(fString(res[0][0]));
+                    tooltip.select("#min_2").text(fString(res[0][1]));
+                    tooltip.select("#qtd_2").text(fString(res[0][2]));
+                    tooltip.select("#avg_2").text(fString(res[0][3]));
+                    asynReview(tooltip)
+                }else{
+                    d3.select("#errosql2").text(res.erro)
+                }
             });
 
         }
@@ -389,7 +436,23 @@ function showTooltip(edge_element) {
     })
 
     tooltip.style('visibility', "visible")
-            .classed("hidden", false)
+        .classed("hidden", false)
+
+    tooltip.select("#tooltip_checkbox").on("change", function(event){
+        resetEdgesColor()
+        const selected = d3.select("#tooltip_checkbox").property('checked')
+        edge_element.isCandidate = selected
+        
+        if(edge_element.isCandidate){
+            edge_element.edge.attr("stroke", "#F1C40F")
+            edge_element.left.circle_g.attr("fill", "#F1C40F")
+            edge_element.left.text_g.attr("fill", "#F1C40F")
+            edge_element.right.circle_g.attr("fill", "#F1C40F")
+            edge_element.right.text_g.attr("fill", "#F1C40F")
+        }
+        
+    }
+    );  
     /*
     tooltip.style("left",  x + "px")
         .style("top",   y + "px")
@@ -460,6 +523,8 @@ function hideTooltip() {
     tooltip.select("#qtd_q").style("color","#AFCEF5")
     tooltip.select("#avg_q").style("color","#AFCEF5")
 
+    tooltip.select("#tooltip_checkbox").property('checked', false);
+
 }
 
 
@@ -522,6 +587,11 @@ function bound(value, min, max) {
 }
 
 function fString(s){
+    
+    if(!isNaN(parseFloat(s))) {
+            return "" + parseFloat(s).toFixed(2)   
+    }
+
     const max_s = 10;
     if(s.length >= max_s - 3){
         let new_s = "";
@@ -534,4 +604,6 @@ function fString(s){
         return s;
     }
 }
+
+
 setup();

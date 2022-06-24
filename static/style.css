@@ -50,3 +50,22 @@
     width: 100%; 
     height: 200px; 
 }
+
+.table_style {
+    border-collapse: collapse;
+    border: 2px black solid;
+}
+
+.table_header {
+    border: 1px black solid;
+    padding: 5px;
+    background-color: lightgray;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+.table_line {
+    border: 1px black solid;
+    padding: 5px;
+}
