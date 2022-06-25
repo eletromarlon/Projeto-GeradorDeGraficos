@@ -15,63 +15,6 @@
 
 <body class="bg-light">
     
-    <div class="tooltip bg-white" id="tooltip">
-        <div>
-            <input type = "checkbox" id = "tooltip_checkbox" name = "Chave Candidata" value = "Chave Candidata">
-            <label for = "subscribeNews"> Chave Candidata </label>
-        </div>
-        
-        <div class="container">
-            <div class="row">
-                <div class="col text-center">
-                    <span id="C1" class="h5 text-dark font-weight-bold"> C1</span> 
-                </div>
-                <div class="col text-center">
-                    <span id="C2" class="h5 text-dark font-weight-bold"> C1</span> 
-                </div>
-            </div>
-        </div>
-        <!--<hr style="border: 1px solid rgb(23, 162, 184);">-->
-        <hr class="border-secondary border-5 opacity-75">
-        <!--<br>-->
-        <div class="container">
-            <div class="row">
-                <div class="col text-center">
-                    <span class="spam_element" id="qtd_1" > 0 </span> 
-                    <br>
-                    <span class="spam_element" id="max_1" > 0 </span> 
-                    <br>
-                    <span class="spam_element" id="min_1" > 0 </span> 
-                    <br>
-                    <span class="spam_element" id="avg_1" > 0 </span> 
-                    <br>
-                </div>
-                <div class="vr text-info"></div>
-                <div class="col text-center">
-                    <span id="qtd_q" class="font-weight-bold" > Quant.</span><br>
-                    <span id="max_q" class="font-weight-bold"> Max</span> <br>
-                    <span id="min_q" class="font-weight-bold"> Min</span> <br>
-                    <span id="avg_q" class="font-weight-bold"> Média</span> <br>
-                </div>
-                <div class="vr"></div>
-                <div class="col text-center">
-                    <span class="spam_element" id="qtd_2" > 0 </span> 
-                    <br>
-                    <span class="spam_element" id="max_2" > 0 </span> 
-                    <br>
-                    <span class="spam_element" id="min_2" > 0 </span> 
-                    <br>
-                    <span class="spam_element" id="avg_2" > 0 </span> 
-                    <br>
-                </div>
-            </div>
-        </div>
-
-        <button id="tooltip_button" class="btn btn-outline-primary btn-sm tooltip_button">Comparar</button>
-
-    </div>
-
-
     <div class="container-fluid">
         <p class="h2 text-center"><strong>Legacy-DB</strong></p>
         <p class="h6 text-center text-danger">{{erro}}</p>
@@ -163,9 +106,69 @@
                 </div>
             </div>
             <div class="col-6">
+                <div class="row">
+                    <div class="col border border-info rounded " id ="chart"></div>
+                </div>
                 <!--style="border-width:2px;border-style:solid;border-color:black;width:600px; max-width:600px; display: inline-block;"-->
-                <div id ="chart">
-                </div>     
+                <div class="row">
+                    <div class="tooltip bg-white" id="tooltip">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <input class="form-check-input text-secondary" type="checkbox" id="tooltip_checkbox" name="Chave Candidata" value="Chave Candidata">
+                                    <label class="form-check-label text-secondary" for="subscribeNews"> <small> Chave Candidata</small></label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col text-center">
+                                    <span id="C1" class="h5 text-dark font-weight-bold"> C1</span> 
+                                </div>
+                                <div class="col text-center">
+                                    <span id="C2" class="h5 text-dark font-weight-bold"> C1</span> 
+                                </div>
+                            </div>
+                        </div>
+                        <!--<hr style="border: 1px solid rgb(23, 162, 184);">-->
+                        <hr class="border-secondary border-5 opacity-75">
+                        <!--<br>-->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <span class="spam_element" id="qtd_1" > 0 </span> 
+                                    <br>
+                                    <span class="spam_element" id="max_1" > 0 </span> 
+                                    <br>
+                                    <span class="spam_element" id="min_1" > 0 </span> 
+                                    <br>
+                                    <span class="spam_element" id="avg_1" > 0 </span> 
+                                    <br>
+                                </div>
+                                <div class="vr text-info"></div>
+                                <div class="col text-center">
+                                    <span id="qtd_q" class="font-weight-bold" > Quant.</span><br>
+                                    <span id="max_q" class="font-weight-bold"> Max</span> <br>
+                                    <span id="min_q" class="font-weight-bold"> Min</span> <br>
+                                    <span id="avg_q" class="font-weight-bold"> Média</span> <br>
+                                </div>
+                                <div class="vr"></div>
+                                <div class="col text-center">
+                                    <span class="spam_element" id="qtd_2" > 0 </span> 
+                                    <br>
+                                    <span class="spam_element" id="max_2" > 0 </span> 
+                                    <br>
+                                    <span class="spam_element" id="min_2" > 0 </span> 
+                                    <br>
+                                    <span class="spam_element" id="avg_2" > 0 </span> 
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <button id="tooltip_button" class="btn btn-outline-primary btn-sm tooltip_button">Comparar</button>
+                
+                    </div>
+                </div>
+
             </div>
             <!--<div class="col">
                     <p class="h1 text-center"><strong>A</strong></p>
@@ -272,12 +275,10 @@
     </div>
     <div class="container text-center">
         <div class="row">
-            <div class="col">
-                <div>
-                    <button id="table_button">Inciar</button>
-                    <table class="table_style" id="table_id">
-
-                    </table>
+            <div class="col text-center">
+                <div class="text-center">
+                    <button class="btn btn-outline-primary btn-sm mt-3" id="table_button">Inciar</button>
+                    <table class="table  mt-3 rounded-bottom" style="background-color: #dff6fc;" id="table_id"></table>
                 </div>
             </div>
         </div>

@@ -14,14 +14,15 @@
     border: 2px solid rgb(0, 105, 217);
     border-radius: 5px; 
     cursor: default; 
-    position: fixed; 
+     
     margin-bottom: 1px;
 
-    width: 40%; 
+    width: 90%; 
     opacity: 1;
     padding: 3px; 
     bottom: 0;
-    left:30%;
+    left:5%;
+    bottom: 5%;
 
 }
 
@@ -51,12 +52,12 @@
     height: 200px; 
 }
 
-.table_style {
+.table_style { /* Desativado*/
     border-collapse: collapse;
     border: 2px black solid;
 }
 
-.table_header {
+.table_headerr { /* Desativado*/
     border: 1px black solid;
     padding: 5px;
     background-color: lightgray;
@@ -65,7 +66,7 @@
 }
 
 
-.table_line {
+.table_linee { /* Desativado*/
     border: 1px black solid;
     padding: 5px;
 }
