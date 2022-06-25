@@ -235,7 +235,7 @@ function requestAnalysis(){
                         const c_cell_1 = line.append("td")
                             .attr("class", "table_line")
                         if(res.result[j].t1 == null){
-                            c_cell_1.text("null")
+                            c_cell_1.text("Não encontrado")
                         }else{
                             c_cell_1.text(res.result[j].t1[0])
                         }   
@@ -244,7 +244,7 @@ function requestAnalysis(){
                             const cell = line.append("td")
                                 .attr("class", "table_line")
                             if(res.result[j].t1 == null){
-                                cell.text("null")
+                                cell.text("Não encontrado")
                             }else{
                                 cell.text(res.result[j].t1[i])
                             }
@@ -253,7 +253,7 @@ function requestAnalysis(){
                         const c_cell_2 = line.append("td")
                             .attr("class", "table_line")
                         if(res.result[j].t2 == null){
-                            c_cell_2.text("null")
+                            c_cell_2.text("Não encontrado")
                         }else{
                             c_cell_2.text(res.result[j].t2[0])
                         }  
@@ -262,7 +262,7 @@ function requestAnalysis(){
                             const cell = line.append("td")
                                 .attr("class", "table_line")
                             if(res.result[j].t2  == null){
-                                cell.text("null")
+                                cell.text("Não encontrado")
                             }else{
                                 cell.text(res.result[j].t2[i])
                             }

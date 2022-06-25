@@ -27,6 +27,27 @@ def home():
        render_template('index.html')
     )
 
+@app.route('/limpaerros') 
+def limparErros():
+    global bdData1
+    global bdData2
+
+    return render_template(
+        'index.html',
+        user1 = bdData1["user"],
+        password1 = bdData1["password"],
+        id1 = bdData1["id"],
+        host1 = bdData1["host"],
+        port1 = bdData1["port"],
+        bd1 = bdData1["bdType"],
+        user2 = bdData2["user"],
+        password2 = bdData2["password"],
+        id2 = bdData2["id"],
+        host2 = bdData2["host"],
+        port2 = bdData2["port"],
+        bd2 = bdData2["bdType"] 
+    )
+
 @app.route('/feedback') 
 def feedback():
 

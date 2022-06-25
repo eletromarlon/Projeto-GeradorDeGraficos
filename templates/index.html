@@ -18,10 +18,24 @@
     <div class="container-fluid">
         <p class="h2 text-center"><strong>Legacy-DB</strong></p>
         <p class="h6 text-center text-danger">{{erro}}</p>
-        <div class="d-flex justify-content-center mb-3 mt-2">
+        <!-- <div class="d-flex justify-content-center mb-3 mt-2">
             <a href="/">
-                <button id="button_clean" type="button" class="btn btn-warning">Limpar Tela</button>
+                <button id="button_clean" type="button" class="btn btn-warning">Zerar Dados</button>
             </a>
+        </div> -->
+        <div class="row mt-2 mb-3">
+            <div class="col"></div>
+            <div class="col text-center">
+                <a href="/">
+                    <button id="button_clean" type="button" class="btn btn-warning">Apagar Todos os Dados</button>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/limpaerros">
+                    <button id="button_clean" type="button" class="btn btn-warning">Apagar Consutas e Grafos</button>
+                </a>
+            </div>
+            <div class="col"></div>
         </div>
         <div class="row">
             <div class="col">
@@ -72,7 +86,7 @@
                             </fieldset>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/contacts">Algum erro?</a>
+                        <a class="dropdown-item" href="/feedback">Algum erro?</a>
                     </div>
                 </div>
 
@@ -106,6 +120,11 @@
                 </div>
             </div>
             <div class="col-6">
+                <div class="row">
+                    <div class="col">
+                        <p class="h4 text-center">Análise Estatística</p>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col border border-info rounded " id ="chart"></div>
                 </div>
@@ -226,7 +245,7 @@
                             </fieldset>
                         </form>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/contacts">Algum erro?</a>
+                        <a class="dropdown-item" href="/feedback">Algum erro?</a>
                     </div>
                 </div>
                 <div class="mt-2">
@@ -274,10 +293,19 @@
         </div>
     </div>
     <div class="container text-center">
+        <div class="row mt-2">
+            <div class="col">
+                <p class="h4 text-center">Análise de Linhas</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-outline-primary btn-sm mt-3" id="table_button">Inciar</button>
+            </div>
+        </div>
         <div class="row">
             <div class="col text-center">
                 <div class="text-center">
-                    <button class="btn btn-outline-primary btn-sm mt-3" id="table_button">Inciar</button>
                     <table class="table  mt-3 rounded-bottom" style="background-color: #dff6fc;" id="table_id"></table>
                 </div>
             </div>
