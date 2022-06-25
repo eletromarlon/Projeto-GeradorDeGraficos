@@ -98,6 +98,7 @@ function setup(){
     d3.select("#button_exec_1").on("click", function(event) {
         const SQL = editor1.getValue()
         console.log("CLICK EXEC 1: " + SQL)
+        resetEdgesColor()
         clearSide(svg, 1)
         if(SQL != null){
             SQL1 = SQL;
@@ -108,6 +109,7 @@ function setup(){
     d3.select("#button_exec_2").on("click", function(event) {
         const SQL = editor2.getValue()
         console.log("CLICK EXEC 2: " + SQL)
+        resetEdgesColor()
         clearSide(svg, 2)
         if(SQL != null){
             SQL2 = SQL;
@@ -119,26 +121,9 @@ function setup(){
 
     d3.select("#table_button").on("click",function(event){
         console.log("Iniciando Comparação de Instâncias")
+        d3.select("#table_id").selectAll("*").remove();
+        requestAnalysis()
     });   
-
-    const table = d3.select("#table_id");
-    table.append("th")
-        .attr("class", "table_header")
-        .text("Test 1");
-    table.append("th")
-        .attr("class", "table_header")
-        .text("Test 2");
-    
-    const linha = table.append("tr")
-
-    linha.append("td")
-        .attr("class", "table_line")
-        .text("dadoooos1")
-
-    linha.append("td")
-        .attr("class", "table_line")
-        .text("dadoooos2")
-
 }
 
 function requestColumns(svg, db, SQL_H) {
@@ -177,7 +162,120 @@ async function requestCompare(db, SQL_H, value_H) {
     return response.json();
 }
 
+function requestAnalysis(){
+    if( Object.keys(EDGES).length > 0){
+        let columns1 = []
+        let columns2 = []
+        let candidate1 = null
+        let candidate2 = null
+        let candidateFlag = false
 
+        for (x in EDGES) {   
+            if(EDGES[x].isCandidate){
+                candidateFlag = true;
+                candidate1 = EDGES[x].left.text
+                candidate2 = EDGES[x].right.text
+            }else{
+                columns1.push(EDGES[x].left.text);
+                columns2.push(EDGES[x].right.text);
+            }
+
+        }
+        if(candidateFlag){
+            fetch('/api/analysis/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                { 
+                    SQL_1: SQL1.replaceAll(";", ""), 
+                    SQL_2: SQL2.replaceAll(";", ""),
+                    columns_1: columns1, 
+                    columns_2: columns2,
+                    candidate_1: candidate1,
+                    candidate_2: candidate2
+                })
+            }).then(res => res.json())
+            .then(function(res){
+                if(res.erro != null){
+                    console.log(res.erro); // ERROR!
+                    d3.select("#errosql1").text(res.erro)
+                    d3.select("#errosql2").text(res.erro)
+                }else{
+                    console.log(res)
+
+                    const table = d3.select("#table_id");
+                    
+                    table.append("th")
+                        .attr("class", "table_header")
+                        .text(candidate1);
+
+                    for (let i = 0; i < columns1.length; i++) {
+                        table.append("th")
+                            .attr("class", "table_header")
+                            .text(columns1[i]);
+                    }
+
+                    table.append("th")
+                        .attr("class", "table_header")
+                        .text(candidate2);
+
+                    for (let i = 0; i < columns2.length; i++) {
+                       table.append("th")
+                            .attr("class", "table_header")
+                            .text(columns2[i]);
+                    }
+
+                    for (let j = 0; j < res.result.length; j++) {  
+                        
+                        const line = table.append("tr")
+                        
+                        const c_cell_1 = line.append("td")
+                            .attr("class", "table_line")
+                        if(res.result[j].t1 == null){
+                            c_cell_1.text("null")
+                        }else{
+                            c_cell_1.text(res.result[j].t1[0])
+                        }   
+
+                        for (let i = 1; i < columns1.length+1; i++) {
+                            const cell = line.append("td")
+                                .attr("class", "table_line")
+                            if(res.result[j].t1 == null){
+                                cell.text("null")
+                            }else{
+                                cell.text(res.result[j].t1[i])
+                            }
+                        }
+
+                        const c_cell_2 = line.append("td")
+                            .attr("class", "table_line")
+                        if(res.result[j].t2 == null){
+                            c_cell_2.text("null")
+                        }else{
+                            c_cell_2.text(res.result[j].t2[0])
+                        }  
+
+                        for (let i = 1; i < columns2.length+1; i++) {
+                            const cell = line.append("td")
+                                .attr("class", "table_line")
+                            if(res.result[j].t2  == null){
+                                cell.text("null")
+                            }else{
+                                cell.text(res.result[j].t2[i])
+                            }
+                        }
+                        
+                    }
+
+                }
+            });
+        }
+        
+    }
+}
 
 function clearSide(svg, db){
     hideTooltip()

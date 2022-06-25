@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for
 import conexao
+import traceback
 
 app = Flask(__name__)
 
@@ -138,7 +139,7 @@ def connectionBd2():
     if (True):
         try:
             if bdData2["bdType"] == 'Oracle':
-                bdOut2 = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData["id"], "SELECT 1") 
+                bdOut2 = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData2["id"], "SELECT 1") 
             if bdData2["bdType"] == 'MySQL':
                 bdOut2 = conexao.mysqlConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], "SELECT 1")
             if bdData2["bdType"] == 'PostgreSQL':
@@ -230,7 +231,7 @@ def consultasql():
             if (bdData2 != None and consulta2 != None):
                 try:
                     if bdData2["bdType"] == 'Oracle':
-                        bdOut2 = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData["id"], consulta2) 
+                        bdOut2 = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData2["id"], consulta2) 
                     if bdData2["bdType"] == 'MySQL':
                         bdOut2 = conexao.mysqlConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta2)
                     if bdData2["bdType"] == 'PostgreSQL':
@@ -408,5 +409,134 @@ def postGenerator(valor):
                     return { "erro": errosql}
             else:
                 return "Error! Parece que nao tem nenhum banco conectado ou a requisição esta errada para os bancos"
+
+
+
+def exec_query(valor, consulta):
+    #resposta = None
+    if valor == '1':
+        if bdData1["bdType"] == 'Oracle':
+            resposta = conexao.oracleConnection(bdData1["user"], bdData1["password"], bdData1["id"], consulta) 
+        if bdData1["bdType"] == 'MySQL':
+            resposta = conexao.mysqlConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+        if bdData1["bdType"] == 'PostgreSQL':
+            resposta = conexao.postgresConnection(bdData1["host"], bdData1["port"], bdData1["id"], bdData1["user"], bdData1["password"], consulta)
+        if bdData1["bdType"] == 'SQLite':
+            resposta = conexao.sqLiteConnection(consulta)
+        return (resposta[0])
+
+    if valor == '2':
+        if bdData2["bdType"] == 'Oracle':
+            resposta = conexao.oracleConnection(bdData2["user"], bdData2["password"], bdData2["id"], consulta) 
+        if bdData2["bdType"] == 'MySQL':
+            resposta = conexao.mysqlConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+        if bdData2["bdType"] == 'PostgreSQL':
+            resposta = conexao.postgresConnection(bdData2["host"], bdData2["port"], bdData2["id"], bdData2["user"], bdData2["password"], consulta)
+        if bdData2["bdType"] == 'SQLite':
+            resposta = conexao.sqLiteConnection(consulta)  
+
+        return (resposta[0])
+
+    #return None
+              
+
+
+@app.route('/api/analysis/', methods=['GET', 'POST']) # nome da rota
+def analysis():
+    try:
+        content = request.json
+        SQL1 = content["SQL_1"]
+        SQL2 = content["SQL_2"]
+        columns1 = content["columns_1"]
+        columns2 = content["columns_2"]
+        candidate1 = content["candidate_1"]
+        candidate2 = content["candidate_2"]
+
+        #print("SQL1: " + SQL1)
+        #print("SQL2: " + SQL2)
+        #print("candidate1 : " + candidate1)
+        #print("candidate2 : " + candidate2)
+        #print("columns1: " + ''.join(columns1))
+        #print("columns2: " + ''.join(columns2))
+        
+        double_quotes_1 = "\""
+        double_quotes_2 = "\""
+        
+        if bdData1["bdType"] == 'MySQL':
+            double_quotes_1 = ""
+        
+        if bdData2["bdType"] == 'MySQL':
+            double_quotes_2 = ""
+
+        super_SQL1 = "select " + double_quotes_1 + candidate1 + double_quotes_1
+        super_SQL2 = "select " + double_quotes_2 + candidate2 + double_quotes_2
+        
+        size_columns = 1
+
+        for x in columns1:
+            size_columns = size_columns + 1
+            super_SQL1 =  super_SQL1 + ", " + double_quotes_1 + x + double_quotes_1
+        for x in columns2:
+            super_SQL2 =  super_SQL2 + ", " + double_quotes_2 + x + double_quotes_2 
+
+        super_SQL1 = super_SQL1 + " from (" + SQL1 + ") as result" 
+        super_SQL2 = super_SQL2 + " from (" + SQL2 + ") as result"
+
+        print("SSQL1: " + super_SQL1)    
+        print("SSQL2: " + super_SQL2) 
+
+        resp1 = exec_query("1",super_SQL1)
+        resp2 = exec_query("2",super_SQL2)
+        
+        result1 = []
+        result2 = []
+
+        for x1 in resp1: #COPY VALUES
+            tuple_ = []
+            for i in range(size_columns):
+                tuple_.append(str(x1[i]))
+            result1.append(tuple_)
+
+        for x2 in resp2: #COPY VALUES
+            tuple_ = []
+            for i in range(size_columns):
+                tuple_.append(str(x2[i]))
+            result2.append(tuple_)
+
+        remove1 = []
+        remove2 = []
+        final_result = []
+
+        # INNER JOIN !!!! Nested-Loop Join Algorithm (LOW PERFORMANCE)
+        for index1, tuple1 in enumerate(result1):
+            for index2, tuple2 in enumerate(result2):
+                if tuple1[0] == tuple2[0]:
+                    isValid = True
+                    for i in range(size_columns-1): 
+                        if tuple1[i+1] != tuple2[i+1]:
+                            isValid = False
+                    if isValid == False:
+                        final_result.append({"t1":tuple1, "t2":tuple2})
+                    remove1.append(tuple1)
+                    remove2.append(tuple2)
+        
+        for tuple in remove1:
+            result1.remove(tuple)
+        for tuple in remove2:
+            result2.remove(tuple)
+
+        for tuple in result1:
+            final_result.append({"t1":tuple, "t2":None})
+        for tuple in result2:
+            final_result.append({"t1":None, "t2":tuple})
+
+        return jsonify( { "result": final_result } );
+    except Exception as e:
+        traceback.print_tb(e.__traceback__)
+        errosql = f"Erro! - {e}"
+        return { "erro": errosql}
+
+    return { "erro": "analysis-erro"};
+
 
 app.run(debug=True) #debug=True é utilizado para reiniciar o servidor sempre que alterado
