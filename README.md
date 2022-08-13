@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://github.com/eletromarlon/Projeto-GeradorDeGraficos/blob/main/printIndex.png"/></p>
 
-<p>Ferramenta de geração de gráficos e manipulação de dados extraidos a partir de um banco de dados setado pelo usuário.</p>
+<p>Ferramenta de geração de gráficos e manipulação de dados extraídos a partir de um banco de dados setado pelo usuário.</p>
 
 <h4 align="center"> :construction: Projeto em construção :construction:</h4>
 
